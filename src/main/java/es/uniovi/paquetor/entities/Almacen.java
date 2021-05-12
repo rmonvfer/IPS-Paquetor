@@ -18,7 +18,7 @@ public class Almacen {
     private Ubicacion ubicacion;
 
     @OneToMany(mappedBy = "almacen", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Empleado> empleados;
+    private List<Usuario> empleados;
 
     @OneToOne(mappedBy = "almacen_interno_origen", cascade = CascadeType.PERSIST, optional = false, orphanRemoval = true)
     private RutaInterna rutaInterna;
@@ -42,11 +42,11 @@ public class Almacen {
         this.rutaInterna = rutaInterna;
     }
 
-    public List<Empleado> getEmpleados() {
+    public List<Usuario> getEmpleados() {
         return empleados;
     }
 
-    public void setEmpleados(List<Empleado> empleados) {
+    public void setEmpleados(List<Usuario> empleados) {
         this.empleados = empleados;
     }
 

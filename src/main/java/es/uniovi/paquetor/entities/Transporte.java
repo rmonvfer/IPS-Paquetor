@@ -20,13 +20,13 @@ public class Transporte {
 
     @JoinColumn(name = "CONDUCTOR_ID")
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private Empleado conductor;
+    private Usuario conductor;
 
-    public Empleado getConductor() {
+    public Usuario getConductor() {
         return conductor;
     }
 
-    public void setConductor(Empleado conductor) {
+    public void setConductor(Usuario conductor) {
         this.conductor = conductor;
     }
 

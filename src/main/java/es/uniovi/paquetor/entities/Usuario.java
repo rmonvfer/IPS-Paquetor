@@ -12,31 +12,61 @@ public class Usuario {
     private Long id_usuario;
 
     @OneToMany(mappedBy = "emisor", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private List<Paquete> paquetes;
+    private List<Paquete> paquetes_enviados;
 
     @OneToMany(mappedBy = "receptor", orphanRemoval = true)
     private List<Paquete> paquetes_recibidos;
 
-    @Column(name = "EMAIL", nullable = false, unique = true)
+    @Column(name = "EMAIL", unique = true)
     private String email;
 
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(name = "PASSWORD")
     private String password;
 
     @JoinColumn(name = "DOMICILIO_ID")
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Ubicacion domicilio;
 
-    @Column(name = "NOMBRE", nullable = false)
+    @Column(name = "NOMBRE")
     private String nombre;
 
-    public Usuario(){}
+    @Transient
+    private String tempPassword;
+
+    @Column(name = "ROLE")
+    private String role;
+
+    @JoinColumn(name = "ALMACEN_ID")
+    @ManyToOne(optional = true)
+    private Almacen almacen;
+
+    @OneToOne(mappedBy = "conductor", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private Transporte transporte;
+
+    public Transporte getTransporte() {
+        return transporte;
+    }
+
+    public void setTransporte(Transporte transporte) {
+        this.transporte = transporte;
+    }
+
+    public Almacen getAlmacen() {
+        return almacen;
+    }
+
+    public void setAlmacen(Almacen almacen) {
+        this.almacen = almacen;
+    }
+
+    public Usuario(){ }
 
     public Usuario(String email, String password, String nombre, Ubicacion domicilio){
         setEmail(email);
         setPassword(password);
         setNombre(nombre);
         setDomicilio(domicilio);
+        setTempPassword(password);
     }
 
     public String getNombre() {
@@ -79,12 +109,12 @@ public class Usuario {
         this.paquetes_recibidos = paquetes_recibidos;
     }
 
-    public List<Paquete> getPaquetes() {
-        return paquetes;
+    public List<Paquete> getPaquetes_enviados() {
+        return paquetes_enviados;
     }
 
-    public void setPaquetes(List<Paquete> paquetes) {
-        this.paquetes = paquetes;
+    public void setPaquetes_enviados(List<Paquete> paquetes) {
+        this.paquetes_enviados = paquetes;
     }
 
     public Long getId_usuario() {
@@ -94,4 +124,38 @@ public class Usuario {
     public void setId_usuario(Long id_usuario) {
         this.id_usuario = id_usuario;
     }
+
+    public String getTempPassword() {
+        return tempPassword;
+    }
+
+    public void setTempPassword(String tempPassword) {
+        this.tempPassword = tempPassword;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id_usuario=" + id_usuario +
+                ", paquetes_enviados=" + paquetes_enviados +
+                ", paquetes_recibidos=" + paquetes_recibidos +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", domicilio=" + domicilio +
+                ", nombre='" + nombre + '\'' +
+                ", tempPassword='" + tempPassword + '\'' +
+                ", role='" + role + '\'' +
+                ", almacen=" + almacen +
+                ", transporte=" + transporte +
+                '}';
+    }
 }
+

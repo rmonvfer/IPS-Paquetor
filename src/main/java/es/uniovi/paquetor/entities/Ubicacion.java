@@ -10,13 +10,13 @@ public class Ubicacion {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "CIUDAD", nullable = false)
+    @Column(name = "CIUDAD")
     private String ciudad;
 
-    @Column(name = "CALLE", nullable = false)
+    @Column(name = "CALLE")
     private String calle;
 
-    @Column(name = "NUMERO", nullable = false)
+    @Column(name = "NUMERO")
     private Integer numero;
 
     @OneToOne(mappedBy = "domicilio", cascade = CascadeType.PERSIST, orphanRemoval = true)
