@@ -145,16 +145,12 @@ public class Usuario {
     public String toString() {
         return "Usuario{" +
                 "id_usuario=" + id_usuario +
-                ", paquetes_enviados=" + paquetes_enviados +
-                ", paquetes_recibidos=" + paquetes_recibidos +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", domicilio=" + domicilio +
                 ", nombre='" + nombre + '\'' +
                 ", tempPassword='" + tempPassword + '\'' +
                 ", role='" + role + '\'' +
-                ", almacen=" + almacen +
-                ", transporte=" + transporte +
                 '}';
     }
 }

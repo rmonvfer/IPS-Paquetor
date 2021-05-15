@@ -24,8 +24,8 @@ public class SecurityService {
         return null;
     }
 
-    public void autoLogin(String dni, String password) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(dni);
+    public void autoLogin(String email, String password) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(
                 userDetails, password, userDetails.getAuthorities());
 
