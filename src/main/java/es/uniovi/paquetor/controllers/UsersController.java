@@ -34,6 +34,7 @@ public class UsersController {
     // Registro: POST
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(Usuario user) {
+        System.out.println(user);
         user.setRole(rolesService.getRoles().get("USER"));
         usersService.addUser(user);
         securityService.autoLogin(user.getEmail(), user.getTempPassword());
