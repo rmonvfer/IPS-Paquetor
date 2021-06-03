@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<nav th:replace="fragments/nav"></nav>
+<div class="container">
+    <h2>Registro</h2>
+    <form class="form-horizontal" method="post" action="/register" th:object="${user}">
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="email">Email</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="email"
+                       name="email" placeholder="usuario@email.com" required="true" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Nombre</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="name" id="name"
+                       placeholder="Ramón" required="true" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="surname">Apellidos</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="surname" id="surname"
+                       placeholder="Fernández González" required="true" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="password">Contraseña</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="password" id="password"
+                       placeholder="Contraseña" required="true" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="passwordConfirm">Repita la contraseña</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" name="passwordConfirm" id="passwordConfirm"
+                       placeholder="Repita la contraseña" required="true" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

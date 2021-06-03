@@ -20,9 +20,15 @@ public class User {
     @Column(nullable = false, length = 64)
     private String password;
 
-    @Column(name = "first_name", nullable = false, length = 20)
-    private String firstName;
+    @Transient
+    private String passwordConfirm;
+
+    @Column(name = "name", nullable = false, length = 20)
+    private String name;
 
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
+
+    @Column(name="role", nullable = false)
+    private String role;
 }

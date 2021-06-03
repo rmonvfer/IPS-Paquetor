@@ -3,9 +3,13 @@
 <head th:replace="fragments/head"></head>
 <body>
 <nav th:replace="fragments/nav"></nav>
+
 <div class="container" style="text-align: center">
-    <h2>¡Bienvenido!</h2>
-    <p>Hola Usuario, bienvenido a Paquetor</p>
+    <h2>Bienvenido</h2>
+    <h3>Esta es una zona privada de la web</h3>
+
+    <p>Usuario autenticado como: <span sec:authentication="principal.username" th:inline="text"></span></p>
+
 </div>
 </body>
 </html>
