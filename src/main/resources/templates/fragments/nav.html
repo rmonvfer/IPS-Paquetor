@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -9,16 +9,27 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="/register">
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/register}">
                         <span class="glyphicon glyphicon-user"></span>
                         Registrarse
                     </a>
                 </li>
-                <li>
-                    <a href="/login">
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}">
                         <span class="glyphicon glyphicon-log-in"></span>
                         Iniciar Sesión
+                    </a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/home}">
+                        <span sec:authentication="principal.username" th:inline="text"></span>
+                    </a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/logout}">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        Salir
                     </a>
                 </li>
             </ul>
