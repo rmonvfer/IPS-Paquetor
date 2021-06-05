@@ -2,12 +2,14 @@ package es.uniovi.eii.paquetor.entities;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
+@ToString(includeFieldNames = true)
 public class User {
 
     @Id
@@ -31,4 +33,5 @@ public class User {
 
     @Column(name="role", nullable = false)
     private String role;
+
 }

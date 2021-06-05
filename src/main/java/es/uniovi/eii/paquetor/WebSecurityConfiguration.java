@@ -1,6 +1,5 @@
 package es.uniovi.eii.paquetor;
 
-import es.uniovi.eii.paquetor.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,19 +19,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public SpringSecurityDialect securityDialect() {
-        return new SpringSecurityDialect();
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
@@ -41,16 +35,25 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public SpringSecurityDialect securityDialect() {
+        return new SpringSecurityDialect();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .antMatchers("/css/**", "/img/**", "/script/**", "/", "/register", "/login/**").permitAll()
-            .antMatchers("/parcel/*").authenticated().anyRequest().permitAll()
-                .and()
-            .formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/home")
-                .and()
-            .logout().permitAll();
+        http
+                .authorizeRequests()
+                    .antMatchers("/css/**", "/js/**", "/img/**", "/check-parcel/**").permitAll()
+                    .antMatchers("/", "/register", "/login").permitAll()
+                    .antMatchers("/route/**").hasRole("EMPLOYEE")
+                    .anyRequest().authenticated()
+                        .and()
+                .formLogin()
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/home")
+                        .and()
+                .logout()
+                    .permitAll();
     }
 }
-
-
