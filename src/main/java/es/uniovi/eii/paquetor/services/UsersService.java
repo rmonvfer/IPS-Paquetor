@@ -1,6 +1,6 @@
 package es.uniovi.eii.paquetor.services;
 
-import es.uniovi.eii.paquetor.entities.User;
+import es.uniovi.eii.paquetor.entities.users.User;
 import es.uniovi.eii.paquetor.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +33,7 @@ public class UsersService {
     }
 
     public void addUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.password(bCryptPasswordEncoder.encode(user.password()));
         usersRepository.save(user);
     }
 

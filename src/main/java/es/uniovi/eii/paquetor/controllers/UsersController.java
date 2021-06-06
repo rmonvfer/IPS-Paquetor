@@ -1,6 +1,6 @@
 package es.uniovi.eii.paquetor.controllers;
 
-import es.uniovi.eii.paquetor.entities.User;
+import es.uniovi.eii.paquetor.entities.users.User;
 import es.uniovi.eii.paquetor.services.RolesService;
 import es.uniovi.eii.paquetor.services.SecurityService;
 import es.uniovi.eii.paquetor.services.UsersService;
