@@ -27,5 +27,4 @@ public class Warehouse extends Location {
     @JoinColumn(name = "EXTERNAL_WAREHOUSE_ID", nullable = false)
     @OneToMany(orphanRemoval = true)
     private List<Warehouse> externalWarehouses;
-
 }

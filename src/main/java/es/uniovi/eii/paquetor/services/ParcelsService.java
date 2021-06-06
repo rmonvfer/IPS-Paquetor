@@ -1,10 +1,7 @@
 package es.uniovi.eii.paquetor.services;
-
-import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
-import es.uniovi.eii.paquetor.entities.users.User;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import es.uniovi.eii.paquetor.repositories.WarehouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ParcelsService {
@@ -32,14 +30,21 @@ public class ParcelsService {
         return parcels;
     }
 
-
     public int sendParcel(Parcel parcel) {
-        CustomerUser sender = parcel.getSender();
-
+        CustomerUser sender    = parcel.getSender();
+        CustomerUser recipient = parcel.getRecipient();
 
         // Buscar el almacén correspondiente a esa ubicación
-        Warehouse userReferenceWarehouse =
+        Warehouse senderReferenceWarehouse =
                 warehouseRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
+
+        // Reparto interno (emisor y receptor están en la misma ciudad)
+        if (sender.getLocation().getCiudad().equalsIgnoreCase(recipient.getLocation().getCiudad())) {
+            // Añadir el paquete a la ruta de reparto interna.
+            senderReferenceWarehouse.getInternalRoute().getRouteStops().add()
+        }
+
+        // Añadir el paquete a la ruta d
 
 
         return 0;
