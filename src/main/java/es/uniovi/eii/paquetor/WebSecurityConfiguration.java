@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @Configuration
@@ -54,6 +55,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/home")
                         .and()
                 .logout()
+                    .logoutRequestMatcher( new AntPathRequestMatcher("/logout"))
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
                     .permitAll();
     }
 }
