@@ -1,8 +1,8 @@
 package es.uniovi.eii.paquetor.entities.users;
 
 import es.uniovi.eii.paquetor.entities.locations.Location;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
@@ -10,11 +10,12 @@ import javax.persistence.*;
  * Empleado usuario del sistema
  */
 @Entity
-@Setter @Getter
+@Data @Accessors(chain = true)
 public class CustomerUser extends BaseUser {
 
     public CustomerUser() {
         super();
+        setRole();
     }
 
     public CustomerUser(String email) {
@@ -22,15 +23,12 @@ public class CustomerUser extends BaseUser {
         setRole();
     }
 
-    @Column(name="role", nullable = false)
-    private String role;
-
     @JoinColumn(name = "LOCATION_ID")
     @ManyToOne
     private Location location;
 
     @Override
     void setRole() {
-        this.role = "ROLE_USER";
+        super.role = "ROLE_USER";
     }
 }

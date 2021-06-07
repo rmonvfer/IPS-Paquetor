@@ -7,7 +7,6 @@ import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import es.uniovi.eii.paquetor.repositories.WarehouseRepository;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -38,6 +36,27 @@ public class ParcelsService {
         List<Parcel> parcels = new ArrayList<>();
         parcelsRepository.findAll().forEach(parcels::add);
         return parcels;
+    }
+
+    /**
+     * Registra un nuevo paquete en el sistema.
+     * @param sender Usuario que envía el paquete
+     * @param recipient Usuario que recibirá el paquete
+     * @param height Altura del paquete
+     * @param width Ancho del paquete
+     * @param depth Profundidad del paquete
+     * @return UUID, identificador único aleatorio del paquete.
+     */
+    public UUID registerNewParcel(CustomerUser sender, CustomerUser recipient, Double height, Double width, Double depth) {
+        UUID parcelUUID = UUID.randomUUID();
+        Parcel newParcel =
+                new Parcel(sender, recipient).setId(parcelUUID).setDepth(depth)
+                        .setHeight(height).setWidth(width).setStatus(ParcelStatus.NOT_PROCESSED);
+        parcelsRepository.save(newParcel);
+
+        log.debug("Registrado nuevo paquete en el sistema " + newParcel);
+
+        return parcelUUID;
     }
 
     /**
@@ -67,6 +86,8 @@ public class ParcelsService {
 
             // Añadir una parada de recogida en la ruta interna del almacén de referencia para el emisor
             warehouseService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
+
+            log.debug("Orden de recogida registrada correctamente.");
         }
     }
 
@@ -79,15 +100,7 @@ public class ParcelsService {
         return parcelsRepository.findById(id).get();
     }
 
-    public void addParcel(Parcel parcel) {
-        parcelsRepository.save(parcel);
-    }
-
     public void deleteParcel(Long id) {
         parcelsRepository.deleteById(id);
-    }
-
-    public void editParcel(Parcel parcel) {
-        parcelsRepository.save(parcel);
     }
 }

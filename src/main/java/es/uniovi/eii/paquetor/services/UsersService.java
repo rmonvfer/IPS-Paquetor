@@ -1,6 +1,7 @@
 package es.uniovi.eii.paquetor.services;
 
-import es.uniovi.eii.paquetor.entities.users.User;
+import es.uniovi.eii.paquetor.entities.users.BaseUser;
+import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UsersService {
@@ -22,30 +24,49 @@ public class UsersService {
     @PostConstruct
     public void init() { /**/ }
 
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<User>();
+    /**
+     * Obtiene un listado de todos los usuarios del sistema: empleados y clientes.
+     * @return Lista con los usuarios del sistema.
+     */
+    public List<BaseUser> getUsers() {
+        List<BaseUser> users = new ArrayList<>();
         usersRepository.findAll().forEach(users::add);
         return users;
     }
 
-    public User getUser(Long id) {
-        return usersRepository.findById(id).get();
+    /**
+     * Obtiene un cliente por su id
+     * @param id UUID del cliente
+     * @return cliente si se encuentra, null en caso contrario.
+     */
+    public CustomerUser getCustomer(UUID id) {
+        return (CustomerUser) usersRepository.findById(id).get();
     }
 
-    public void addUser(User user) {
-        user.password(bCryptPasswordEncoder.encode(user.password()));
+    /**
+     * Registra un cliente.
+     * @param user Cliente a registrar
+     */
+    public void addCustomer(CustomerUser user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setId(UUID.randomUUID());
         usersRepository.save(user);
     }
 
-    public User getUserByEmail(String email) {
-        return usersRepository.findByEmail(email);
+    /**
+     * Obtiene a un cliente identificado por su email
+     * @param email email del cliente
+     * @return cliente si se encuentra, null en caso contrario.
+     */
+    public CustomerUser getUserByEmail(String email) {
+        return (CustomerUser) usersRepository.findByEmail(email);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteCustomer(UUID id) {
         usersRepository.deleteById(id);
     }
 
-    public void editUser(User user) {
+    public void editCustomer(CustomerUser user) {
         usersRepository.save(user);
     }
 }

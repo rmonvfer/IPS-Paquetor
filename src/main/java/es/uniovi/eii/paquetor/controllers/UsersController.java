@@ -1,6 +1,6 @@
 package es.uniovi.eii.paquetor.controllers;
 
-import es.uniovi.eii.paquetor.entities.users.User;
+import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.services.RolesService;
 import es.uniovi.eii.paquetor.services.SecurityService;
 import es.uniovi.eii.paquetor.services.UsersService;
@@ -35,14 +35,14 @@ public class UsersController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new CustomerUser());
         return "register";
     }
 
     @PostMapping(value = "/register")
-    public String signup(@ModelAttribute("user") User user, Model model) {
+    public String signup(@ModelAttribute("user") CustomerUser user, Model model) {
         user.setRole(rolesService.getRoles()[0]);
-        usersService.addUser(user);
+        usersService.addCustomer(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
         return "redirect:home";
     }

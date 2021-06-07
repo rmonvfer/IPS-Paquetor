@@ -1,7 +1,7 @@
 package es.uniovi.eii.paquetor.entities.users;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,8 @@ import javax.persistence.Entity;
  * Empleado transportista.
  */
 @Entity
-@Getter @Setter
+@Data
+@Accessors(chain = true)
 public class EmployeeUser extends BaseUser {
 
     public EmployeeUser() {

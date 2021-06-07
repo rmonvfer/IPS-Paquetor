@@ -1,18 +1,16 @@
 package es.uniovi.eii.paquetor.entities;
 
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
-@Setter @Getter
+@Data
 public class RouteStop {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     public RouteStop() { /**/ }
 

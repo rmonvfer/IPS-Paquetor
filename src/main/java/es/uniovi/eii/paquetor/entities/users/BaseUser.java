@@ -1,11 +1,14 @@
 package es.uniovi.eii.paquetor.entities.users;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.UUID;
 
-@Entity @Setter @Getter
+@Table(name = "BaseUser")
+@Entity
+@Data
+@Accessors(chain = true)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class BaseUser {
 
@@ -22,8 +25,14 @@ public abstract class BaseUser {
     @Column(nullable = false, unique = true, length = 45)
     private String email;
 
-    @Column(nullable = false, length = 64)
+    @Column(length = 64)
     private String password;
+
+    @Column(nullable = false, length = 64)
+    private String DNI;
+
+    @Column(name="role", nullable = false)
+    protected String role;
 
     @Transient
     private String passwordConfirm;

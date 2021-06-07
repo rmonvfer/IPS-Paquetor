@@ -21,5 +21,6 @@ public class InsertSampleDataService {
     @PostConstruct
     public void init() {
 
+
     }
 }

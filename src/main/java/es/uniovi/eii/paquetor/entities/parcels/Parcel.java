@@ -1,21 +1,27 @@
 package es.uniovi.eii.paquetor.entities.parcels;
 
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter
-@ToString
+@Data
+@Accessors(chain = true)
 public class Parcel {
 
     @Id
     @GeneratedValue
     private UUID id;
+
+    public Parcel() { /**/ }
+
+    public Parcel(CustomerUser sender, CustomerUser recipient) {
+        setSender(sender);
+        setRecipient(recipient);
+    }
 
     @Column(name = "HEIGHT", nullable = false)
     private Double height;

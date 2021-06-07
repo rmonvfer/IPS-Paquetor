@@ -29,7 +29,6 @@ public class SecurityService {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken aToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-
         authenticationManager.authenticate(aToken);
 
         if (aToken.isAuthenticated()) {

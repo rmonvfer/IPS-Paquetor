@@ -1,20 +1,20 @@
 package es.uniovi.eii.paquetor.entities;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.LinkedList;
-import java.util.UUID;
+import java.util.List;
 
 @Entity
-@Setter @Getter
+@Data
 public class Route {
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @JoinColumn(name = "ROUTE_ID", nullable = false)
     @OneToMany(orphanRemoval = true)
-    private LinkedList<RouteStop> routeStops;
+    private List<RouteStop> routeStops;
 }
