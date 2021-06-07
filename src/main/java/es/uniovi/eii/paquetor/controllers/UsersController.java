@@ -53,8 +53,9 @@ public class UsersController {
 
     @GetMapping("/home")
     public String userHome(Model model) {
-        parcelsService.getParcels();
+        CustomerUser currentCustomer = usersService.getLoggedInUser();
+        model.addAttribute("sentParcels", parcelsService.getCustomerSentParcels(currentCustomer));
+        model.addAttribute("receivedParcels", parcelsService.getCustomerReceivedParcels(currentCustomer));
         return "home";
     }
 }
-

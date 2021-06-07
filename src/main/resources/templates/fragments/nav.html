@@ -1,39 +1,60 @@
-<nav class="navbar navbar-inverse" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+<nav class="navbar" role="navigation" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="navbar-brand">
+        <a class="navbar-item">
+            <strong><em>PAQUETOR</em></strong>
+        </a>
+        <a role="button" class="navbar-burger" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    <i class="fas fa-box-open"></i>
+                    <span class="ml-1">Envíos</span>
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="#">
+                        <i class="fas fa-plus"></i>
+                        <span class="ml-1">Nuevo envío</span>
+                    </a>
+                    <a class="navbar-item" href="#">
+                        <i class="fas fa-search"></i>
+                        <span class="ml-1">Consultar el estado de un envío</span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                <li sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/register}">
-                        <span class="glyphicon glyphicon-user"></span>
-                        Registrarse
+
+        <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable" sec:authorize="isAuthenticated()">
+                <a class="navbar-link">
+                    <span sec:authentication="principal.username" th:inline="text"></span>
+                </a>
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" th:href="@{/logout}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="ml-1">Salir</span>
                     </a>
-                </li>
-                <li sec:authorize="!isAuthenticated()">
-                    <a th:href="@{/login}">
-                        <span class="glyphicon glyphicon-log-in"></span>
-                        Iniciar Sesión
+                </div>
+            </div>
+
+            <div class="navbar-item" sec:authorize="!isAuthenticated()">
+                <div class="buttons">
+                    <a class="button is-primary" th:href="@{/register}">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="ml-1">Regístrate</span>
                     </a>
-                </li>
-                <li sec:authorize="isAuthenticated()">
-                    <a th:href="@{/home}">
-                        Hola,
-                        <span sec:authentication="principal.username" th:inline="text"></span> !
+                    <a class="button is-light" th:href="@{/login}">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span class="ml-1">Iniciar Sesión</span>
                     </a>
-                </li>
-                <li sec:authorize="isAuthenticated()">
-                    <a th:href="@{/logout}">
-                        <span class="glyphicon glyphicon-log-out"></span>
-                        Salir
-                    </a>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

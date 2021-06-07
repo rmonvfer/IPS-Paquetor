@@ -1,62 +1,98 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" class="is-clipped">
 <head th:replace="fragments/head"></head>
 <body>
 <nav th:replace="fragments/nav"></nav>
-<div class="container">
-    <h2>Registro</h2>
-    <form class="form-horizontal" method="post" th:action="@{/register}" th:object="${user}">
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="email">Email</label>
-            <div class="col-sm-10">
-                <input type="email" class="form-control" id="email" th:field="*{email}"
-                       name="email" placeholder="usuario@email.com" required="true" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="dni">DNI</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="dni" th:field="*{DNI}"
-                       name="dni" placeholder="12345678A" required="true" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="name">Nombre</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" th:field="*{name}"
-                       name="name" id="name" placeholder="Ramón" required="true" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="surname">Apellidos</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="surname" th:field="*{lastName}"
-                       id="surname" placeholder="Fernández González" required="true" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="password">Contraseña</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" name="password" th:field="*{password}"
-                       id="password" placeholder="Contraseña" required="true" />
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="passwordConfirm">Repita la contraseña</label>
-            <div class="col-sm-10">
-                <input type="password" class="form-control" name="passwordConfirm" th:field="*{passwordConfirm}"
-                       id="passwordConfirm" placeholder="Repita la contraseña" required="true" />
-            </div>
-        </div>
+<main class="hero is-primary is-fullheight-with-navbar">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column is-8-tablet is-6-desktop is-5-widescreen">
+                    <form th:action="@{/register}" method="post" th:object="${user}" class="box">
+                        <div class="field">
+                            <label for="name" class="label">Nombre</label>
+                            <div class="control has-icons-left">
+                                <input type="text" class="input"
+                                       th:field="*{name}"
+                                       name="name"
+                                       id="name"
+                                       placeholder="Jason" required="true" />
+                            </div>
+                        </div>
 
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <div class="field">
+                            <label for="surname" class="label">Apellidos</label>
+                            <div class="control has-icons-left">
+                                <input type="text" class="input"
+                                       name="surname"
+                                       th:field="*{lastName}"
+                                       id="surname"
+                                       placeholder="Bourne" required="true" />
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                        <div class="field">
+                            <label for="email" class="label">Email</label>
+                            <div class="control has-icons-left">
+                                <input type="email"
+                                       class="input"
+                                       id="email"
+                                       th:field="*{email}"
+                                       name="email"
+                                       placeholder="usuario@email.com" required="true" />
+                                <span class="icon is-small is-left"><i class="fa fa-envelope"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="dni" class="label">DNI</label>
+                            <div class="control has-icons-left">
+                                <input type="text"
+                                       class="input"
+                                       id="dni"
+                                       th:field="*{DNI}"
+                                       name="dni"
+                                       placeholder="12345678A" required="true" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="password" class="label">Contraseña</label>
+                            <div class="control has-icons-left">
+                                <input type="password"
+                                       class="input"
+                                       th:field="*{password}"
+                                       name="password"
+                                       id="password"
+                                       placeholder="Contraseña" required="true"/>
+                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="passwordConfirm" class="label">Repite tu contraseña</label>
+                            <div class="control has-icons-left">
+                                <input type="password"
+                                       class="input"
+                                       name="passwordConfirm"
+                                       th:field="*{passwordConfirm}"
+                                       id="passwordConfirm"
+                                       placeholder="Repita la contraseña" required="true" />
+                                <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        <div class="field">
+                            <button type="submit" class="button is-success">
+                                Iniciar sesión
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</main>
 </body>
 </html>

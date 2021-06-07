@@ -23,10 +23,6 @@ public class CustomerUser extends BaseUser {
         setRole();
     }
 
-    @JoinColumn(name = "LOCATION_ID")
-    @ManyToOne
-    private Location location;
-
     @Override
     void setRole() {
         super.role = "ROLE_USER";

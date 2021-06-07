@@ -1,4 +1,5 @@
 package es.uniovi.eii.paquetor.entities.users;
+import es.uniovi.eii.paquetor.entities.locations.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -33,6 +34,10 @@ public abstract class BaseUser {
 
     @Column(name="role", nullable = false)
     protected String role;
+
+    @JoinColumn(name = "LOCATION_ID")
+    @ManyToOne
+    private Location location;
 
     @Transient
     private String passwordConfirm;

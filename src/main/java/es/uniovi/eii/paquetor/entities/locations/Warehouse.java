@@ -1,8 +1,10 @@
 package es.uniovi.eii.paquetor.entities.locations;
 
 import es.uniovi.eii.paquetor.entities.Route;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,13 +20,14 @@ import java.util.List;
  *    transferidos a la ruta interna.
  */
 @Entity
-@Getter @Setter
+@Data @Accessors(chain = true)
 public class Warehouse extends Location {
+
     @JoinColumn(name = "INTERNAL_ROUTE_ID", nullable = false)
     @OneToOne(optional = false, orphanRemoval = true)
     private Route internalRoute;
 
-    @JoinColumn(name = "EXTERNAL_WAREHOUSE_ID", nullable = false)
+    @JoinColumn(name = "EXTERNAL_WAREHOUSE_ID")
     @OneToMany(orphanRemoval = true)
     private List<Warehouse> externalWarehouses;
 }

@@ -4,6 +4,8 @@ import es.uniovi.eii.paquetor.entities.users.BaseUser;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -60,6 +62,15 @@ public class UsersService {
      */
     public CustomerUser getUserByEmail(String email) {
         return (CustomerUser) usersRepository.findByEmail(email);
+    }
+
+    /**
+     * Obtiene al usuario que ha iniciado sesión el el sistema.
+     * @return Usuario.
+     */
+    public CustomerUser getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return getUserByEmail(auth.getName());
     }
 
     public void deleteCustomer(UUID id) {

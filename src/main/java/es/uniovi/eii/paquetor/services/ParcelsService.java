@@ -6,7 +6,7 @@ import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
-import es.uniovi.eii.paquetor.repositories.WarehouseRepository;
+import es.uniovi.eii.paquetor.repositories.WarehousesRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +24,10 @@ public class ParcelsService {
     ParcelsRepository parcelsRepository;
 
     @Autowired
-    WarehouseRepository warehouseRepository;
+    WarehousesRepository warehousesRepository;
 
     @Autowired
-    WarehouseService warehouseService;
+    WarehousesService warehousesService;
 
     @PostConstruct
     public void init() { /**/ }
@@ -77,7 +77,7 @@ public class ParcelsService {
 
         // Buscar el almacén correspondiente a esa ubicación
         Warehouse senderReferenceWarehouse =
-                warehouseRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
+                warehousesRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
 
         // Si el cliente ha solicitado una recogida
         if (pickupOrderType == ParcelPickupOrderType.REMOTE) {
@@ -85,7 +85,7 @@ public class ParcelsService {
             updateParcelStatus(parcel, ParcelStatus.PICKUP_PENDING);
 
             // Añadir una parada de recogida en la ruta interna del almacén de referencia para el emisor
-            warehouseService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
+            warehousesService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
 
             log.debug("Orden de recogida registrada correctamente.");
         }

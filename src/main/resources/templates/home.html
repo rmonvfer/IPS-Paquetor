@@ -1,15 +1,51 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head"></head>
 <body>
-<nav th:replace="fragments/nav"></nav>
-
-<div class="container" style="text-align: center">
-    <h2>Bienvenido</h2>
-    <h3>Esta es una zona privada de la web</h3>
-
-    <p>Usuario autenticado como: <span sec:authentication="principal.username" th:inline="text"></span></p>
-
-</div>
+<nav class="is-primary" th:insert="fragments/nav"></nav>
+<section class="section">
+    <div class="container">
+        <h1 class="title">Mis Paquetes</h1>
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Enviados
+                        </p>
+                    </header>
+                    <div class="card-content">
+                        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                            <tr>
+                                <th>Destinatario</th>
+                                <th>Fecha registro</th>
+                                <th>Detalles</th>
+                            </tr>
+                            <tr>
+                                <td>Federico García Lorca</td>
+                                <td>15/05/2019</td>
+                                <td><a class="button is-info is-fullwidth is-small">Consultar</a></td>
+                            </tr>
+                            <tr>
+                                <td>Federico García Lorca</td>
+                                <td>15/05/2019</td>
+                                <td><a class="button is-info is-fullwidth is-small">Consultar</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Recibidos
+                        </p>
+                    </header>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

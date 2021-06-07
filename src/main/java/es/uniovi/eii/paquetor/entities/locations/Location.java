@@ -1,7 +1,9 @@
 package es.uniovi.eii.paquetor.entities.locations;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -10,7 +12,8 @@ import java.util.UUID;
  * Define una Ubicación en el mapa
  */
 @Entity
-@Getter @Setter
+@Data
+@Accessors(chain = true)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Location {
 
