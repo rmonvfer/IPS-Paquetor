@@ -91,16 +91,27 @@ public class ParcelsService {
         }
     }
 
+    /**
+     * Actualiza el estado de un paquete (equivalente a "marcarlo")
+     * @param parcel paquete a actualizar
+     * @param parcelStatus nuevo estado
+     */
+    //TODO: Impedir cambios de estado aleatorios, desde un estado concreto solo debe poder 
+    //      cambiarse a una serie concreta y limitada de estados.
     public void updateParcelStatus(Parcel parcel, ParcelStatus parcelStatus) {
         parcel.setStatus(parcelStatus);
         parcelsRepository.save(parcel);
     }
 
-    public Parcel getParcel(Long id) {
+    public List<Parcel> getCustomerParcels(CustomerUser customer) {
+        parcelsRepository.find
+    }
+
+    public Parcel getParcel(UUID id) {
         return parcelsRepository.findById(id).get();
     }
 
-    public void deleteParcel(Long id) {
+    public void deleteParcel(UUID id) {
         parcelsRepository.deleteById(id);
     }
 }

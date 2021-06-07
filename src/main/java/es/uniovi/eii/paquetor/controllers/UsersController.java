@@ -1,6 +1,7 @@
 package es.uniovi.eii.paquetor.controllers;
 
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
+import es.uniovi.eii.paquetor.services.ParcelsService;
 import es.uniovi.eii.paquetor.services.RolesService;
 import es.uniovi.eii.paquetor.services.SecurityService;
 import es.uniovi.eii.paquetor.services.UsersService;
@@ -22,6 +23,9 @@ public class UsersController {
 
     @Autowired
     RolesService rolesService;
+
+    @Autowired
+    ParcelsService parcelsService;
 
     @GetMapping("/")
     public String viewHomePage() {
@@ -49,6 +53,7 @@ public class UsersController {
 
     @GetMapping("/home")
     public String userHome(Model model) {
+        parcelsService.getParcels();
         return "home";
     }
 }

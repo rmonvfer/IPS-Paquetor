@@ -23,7 +23,8 @@
                 </li>
                 <li sec:authorize="isAuthenticated()">
                     <a th:href="@{/home}">
-                        <span sec:authentication="principal.username" th:inline="text"></span>
+                        Hola,
+                        <span sec:authentication="principal.username" th:inline="text"></span> !
                     </a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
