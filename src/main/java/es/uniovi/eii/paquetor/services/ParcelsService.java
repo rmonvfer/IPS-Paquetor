@@ -103,8 +103,12 @@ public class ParcelsService {
         parcelsRepository.save(parcel);
     }
 
-    public List<Parcel> getCustomerParcels(CustomerUser customer) {
-        parcelsRepository.find
+    public List<Parcel> getCustomerSentParcels(CustomerUser customer) {
+        return parcelsRepository.findAllSentByUser(customer);
+    }
+
+    public List<Parcel> getCustomerReceivedParcels(CustomerUser customer) {
+        return parcelsRepository.findAllReceivedByUser(customer);
     }
 
     public Parcel getParcel(UUID id) {
