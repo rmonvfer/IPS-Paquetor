@@ -3,13 +3,15 @@ package es.uniovi.eii.paquetor.entities.parcels;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.UUID;
 
 @Entity
 @Getter @Setter
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Parcel {
+@ToString
+public class Parcel {
 
     @Id
     @GeneratedValue
@@ -35,5 +37,18 @@ public abstract class Parcel {
     @OneToOne(optional = false, orphanRemoval = true)
     private CustomerUser recipient;
 
-    abstract ParcelStatus getStatus();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS", nullable = false)
+    private ParcelStatus status;
+
+    /**
+     * Indica si un paquete debe entregarse mediante una ruta interna
+     * o una ruta externa (según la ubicación del emisor y el receptor)
+     * @return true si ambos viven en la misma ciudad, false en caso contrario
+     */
+    public boolean isForInternalDispatch() {
+        String senderCity = sender.getLocation().getCiudad();
+        String recipientCity = recipient.getLocation().getCiudad();
+        return senderCity.equalsIgnoreCase(recipientCity);
+    }
 }

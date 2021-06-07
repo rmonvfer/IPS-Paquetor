@@ -1,9 +1,14 @@
 package es.uniovi.eii.paquetor.services;
+import es.uniovi.eii.paquetor.entities.RouteStopType;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
+import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
+import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import es.uniovi.eii.paquetor.repositories.WarehouseRepository;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +16,10 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Service
+@Slf4j
 public class ParcelsService {
 
     @Autowired
@@ -20,6 +27,9 @@ public class ParcelsService {
 
     @Autowired
     WarehouseRepository warehouseRepository;
+
+    @Autowired
+    WarehouseService warehouseService;
 
     @PostConstruct
     public void init() { /**/ }
@@ -30,24 +40,39 @@ public class ParcelsService {
         return parcels;
     }
 
-    public int sendParcel(Parcel parcel) {
+    /**
+     * Procesa una petición de recogida para un paquete. Esta etapa es común a los dos tipos de envío,
+     * interno y externo.
+     * Introduce el paquete en la ruta de recogida del almacén de referencia (el que se encuentre en la misma
+     * localidad del emisor).
+     * Una vez que el paquete se encuentre en el almacén, el transportista será el que lo cargue en el transporte
+     * requerido para ser enviado a otra ciudad (mediante una ruta externa).
+     * @param parcel paquete a procesar
+     * @param pickupOrderType tipo de orden de recogida.
+     */
+    public void processParcelPickupOrder(Parcel parcel, ParcelPickupOrderType pickupOrderType) {
         CustomerUser sender    = parcel.getSender();
         CustomerUser recipient = parcel.getRecipient();
+
+        log.debug("Procesando orden de recogida para el paquete " + parcel);
 
         // Buscar el almacén correspondiente a esa ubicación
         Warehouse senderReferenceWarehouse =
                 warehouseRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
 
-        // Reparto interno (emisor y receptor están en la misma ciudad)
-        if (sender.getLocation().getCiudad().equalsIgnoreCase(recipient.getLocation().getCiudad())) {
-            // Añadir el paquete a la ruta de reparto interna.
-            senderReferenceWarehouse.getInternalRoute().getRouteStops().add()
+        // Si el cliente ha solicitado una recogida
+        if (pickupOrderType == ParcelPickupOrderType.REMOTE) {
+            // Marcar el paquete como pendiente de recogida.
+            updateParcelStatus(parcel, ParcelStatus.PICKUP_PENDING);
+
+            // Añadir una parada de recogida en la ruta interna del almacén de referencia para el emisor
+            warehouseService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
         }
+    }
 
-        // Añadir el paquete a la ruta d
-
-
-        return 0;
+    public void updateParcelStatus(Parcel parcel, ParcelStatus parcelStatus) {
+        parcel.setStatus(parcelStatus);
+        parcelsRepository.save(parcel);
     }
 
     public Parcel getParcel(Long id) {

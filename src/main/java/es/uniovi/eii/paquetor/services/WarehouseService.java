@@ -22,11 +22,11 @@ public class WarehouseService {
      * @param parcel paquete a añadir.
      */
     public void addParcelToInternalRoute(Parcel parcel, RouteStopType stopType) {
-
         CustomerUser sender = parcel.getSender();
         Warehouse senderReferenceWarehouse =
                 warehouseRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
 
+        // Crear una parada de ruta e introducir el paquete y el tipo de parada
         RouteStop customerRouteStop = new RouteStop(parcel, stopType);
         senderReferenceWarehouse.getInternalRoute().getRouteStops().add(customerRouteStop);
         warehouseRepository.save(senderReferenceWarehouse);
