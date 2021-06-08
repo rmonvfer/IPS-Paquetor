@@ -6,7 +6,7 @@ import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
-import es.uniovi.eii.paquetor.repositories.WarehousesRepository;
+import es.uniovi.eii.paquetor.repositories.locations.WarehousesRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package es.uniovi.eii.paquetor.repositories;
+package es.uniovi.eii.paquetor.repositories.users;
 
 import es.uniovi.eii.paquetor.entities.users.BaseUser;
 import org.springframework.data.repository.CrudRepository;

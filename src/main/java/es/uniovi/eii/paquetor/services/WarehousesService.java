@@ -5,7 +5,7 @@ import es.uniovi.eii.paquetor.entities.RouteStopType;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
-import es.uniovi.eii.paquetor.repositories.WarehousesRepository;
+import es.uniovi.eii.paquetor.repositories.locations.WarehousesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

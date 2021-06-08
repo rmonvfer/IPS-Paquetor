@@ -1,7 +1,8 @@
 package es.uniovi.eii.paquetor.services;
 
 import es.uniovi.eii.paquetor.entities.users.BaseUser;
-import es.uniovi.eii.paquetor.repositories.UsersRepository;
+import es.uniovi.eii.paquetor.repositories.users.CustomerUsersRepository;
+import es.uniovi.eii.paquetor.repositories.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,11 +20,11 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UsersRepository usersRepository;
+    CustomerUsersRepository customersRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        BaseUser baseUser = usersRepository.findByEmail(email);
+        BaseUser baseUser = customersRepository.findByEmail(email);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(baseUser.getRole()));
 
