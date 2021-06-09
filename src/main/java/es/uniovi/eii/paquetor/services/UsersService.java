@@ -2,7 +2,7 @@ package es.uniovi.eii.paquetor.services;
 
 import es.uniovi.eii.paquetor.entities.users.BaseUser;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
-import es.uniovi.eii.paquetor.repositories.users.CustomerUsersRepository;
+import es.uniovi.eii.paquetor.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +18,7 @@ import java.util.UUID;
 public class UsersService {
 
     @Autowired
-    CustomerUsersRepository customersRepository;
+    UsersRepository usersRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -32,7 +32,7 @@ public class UsersService {
      */
     public List<BaseUser> getUsers() {
         List<BaseUser> users = new ArrayList<>();
-        customersRepository.findAll().forEach(users::add);
+        usersRepository.findAll().forEach(users::add);
         return users;
     }
 
@@ -42,7 +42,7 @@ public class UsersService {
      * @return cliente si se encuentra, null en caso contrario.
      */
     public CustomerUser getCustomer(UUID id) {
-        return customersRepository.findById(id).get();
+        return (CustomerUser) usersRepository.findById(id).get();
     }
 
     /**
@@ -50,9 +50,9 @@ public class UsersService {
      * @param user Cliente a registrar
      */
     public void addCustomer(CustomerUser user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPasswordConfirm()));
         user.setId(UUID.randomUUID());
-        customersRepository.save(user);
+        usersRepository.save(user);
     }
 
     /**
@@ -61,7 +61,7 @@ public class UsersService {
      * @return cliente si se encuentra, null en caso contrario.
      */
     public CustomerUser getUserByEmail(String email) {
-        return (CustomerUser) customersRepository.findByEmail(email);
+        return (CustomerUser) usersRepository.findByEmail(email);
     }
 
     /**
@@ -74,10 +74,10 @@ public class UsersService {
     }
 
     public void deleteCustomer(UUID id) {
-        customersRepository.deleteById(id);
+        usersRepository.deleteById(id);
     }
 
     public void editCustomer(CustomerUser user) {
-        customersRepository.save(user);
+        usersRepository.save(user);
     }
 }

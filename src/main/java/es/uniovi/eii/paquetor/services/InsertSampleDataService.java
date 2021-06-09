@@ -36,21 +36,20 @@ public class InsertSampleDataService {
 
     @PostConstruct
     public void init() {
-        String password = bCryptPasswordEncoder.encode("password");
+        String password = "password";
 
         /* Insertar domicilios */
         Location ramonHome = new Home()
-                .setId(UUID.randomUUID())
                 .setCiudad("Oviedo")
                 .setCalle("Avenida del Olmo")
                 .setCodigoPostal(33000)
                 .setNumero(13)
                 .setPiso("5")
                 .setPuerta("Izq");
+
         locationsService.addLocation(ramonHome); // No es de verdad `O´
 
         Location u1Home = new Home()
-                .setId(UUID.randomUUID())
                 .setCiudad("Oviedo")
                 .setCalle("Valdés Salas")
                 .setCodigoPostal(33007)
@@ -58,7 +57,6 @@ public class InsertSampleDataService {
         locationsService.addLocation(u1Home);
 
         Location u2Home = new Home()
-                .setId(UUID.randomUUID())
                 .setCiudad("Oviedo")
                 .setCalle("Valdés Salas")
                 .setCodigoPostal(33007)
@@ -70,7 +68,6 @@ public class InsertSampleDataService {
         routesRepository.save(oviedoInternalRoute);
 
         Location warehouseOviedo = new Warehouse()
-                .setId(UUID.randomUUID())
                 .setCiudad("Oviedo")
                 .setCodigoPostal(33005)
                 .setCalle("Polígono de Asipo")
@@ -85,7 +82,7 @@ public class InsertSampleDataService {
                 .setName("ramon")
                 .setLastName("vila")
                 .setDNI("71881410H") // Tampoco es de verdad
-                .setPassword(password)
+                .setPasswordConfirm(password)
                 .setLocation(ramonHome);
         usersService.addCustomer(ramon);
 
@@ -94,7 +91,7 @@ public class InsertSampleDataService {
                 .setName("Customer 1")
                 .setLastName("First")
                 .setDNI("12345678B")
-                .setPassword(password)
+                .setPasswordConfirm(password)
                 .setLocation(u1Home);
         usersService.addCustomer(user1);
 
@@ -103,7 +100,7 @@ public class InsertSampleDataService {
                 .setName("Customer 2")
                 .setLastName("Second")
                 .setDNI("12345678C")
-                .setPassword(password)
+                .setPasswordConfirm(password)
                 .setLocation(u2Home);
         usersService.addCustomer(user2);
 

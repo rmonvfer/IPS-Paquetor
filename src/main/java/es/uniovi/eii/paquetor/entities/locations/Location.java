@@ -14,12 +14,13 @@ import java.util.UUID;
 @Entity
 @Data
 @Accessors(chain = true)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "location_type")
 public class Location {
 
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column(name = "CALLE", nullable = false)
     private String calle;

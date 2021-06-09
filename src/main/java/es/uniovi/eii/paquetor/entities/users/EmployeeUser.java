@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 /**
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 @Entity
 @Data
 @Accessors(chain = true)
+@DiscriminatorValue("employee_user")
 public class EmployeeUser extends BaseUser {
 
     public EmployeeUser() {

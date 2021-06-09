@@ -6,11 +6,11 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.util.UUID;
 
-@Table(name = "BaseUser")
 @Entity
 @Data
 @Accessors(chain = true)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type")
 public abstract class BaseUser {
 
     public BaseUser(){ /**/ }

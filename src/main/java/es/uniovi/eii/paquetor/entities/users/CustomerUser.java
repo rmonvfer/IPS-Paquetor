@@ -1,6 +1,5 @@
 package es.uniovi.eii.paquetor.entities.users;
 
-import es.uniovi.eii.paquetor.entities.locations.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -11,6 +10,7 @@ import javax.persistence.*;
  */
 @Entity
 @Data @Accessors(chain = true)
+@DiscriminatorValue("customer_user")
 public class CustomerUser extends BaseUser {
 
     public CustomerUser() {
