@@ -26,6 +26,9 @@ public class ParcelsService {
     @Autowired
     WarehousesService warehousesService;
 
+    @Autowired
+    UsersService usersService;
+
     @PostConstruct
     public void init() { /**/ }
 
@@ -45,15 +48,24 @@ public class ParcelsService {
      * @return UUID, identificador único aleatorio del paquete.
      */
     public UUID registerNewParcel(CustomerUser sender, CustomerUser recipient, Double height, Double width, Double depth) {
-        log.info("Registering new parcel with sender Id="+sender.getId());
         UUID parcelUUID = UUID.randomUUID();
         Parcel newParcel =
                 new Parcel(sender, recipient).setId(parcelUUID).setDepth(depth)
                         .setHeight(height).setWidth(width).setStatus(ParcelStatus.NOT_PROCESSED);
         parcelsRepository.save(newParcel);
 
-        log.info("Registrado nuevo paquete en el sistema " + newParcel);
+        return parcelUUID;
+    }
 
+    /**
+     * Registra un nuevo paquete recibido como parámetro.
+     * Añade un UUID y establece su estado a NOT_PROCESSED
+     * @param parcel paquete a añadir
+     * @return ID del nuevo paquete registrado
+     */
+    public UUID registerNewParcel(Parcel parcel) {
+        UUID parcelUUID = registerNewParcel(
+                parcel.getSender(), parcel.getRecipient(), parcel.getHeight(), parcel.getWidth(), parcel.getDepth());
         return parcelUUID;
     }
 

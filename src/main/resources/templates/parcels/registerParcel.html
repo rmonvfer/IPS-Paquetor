@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<nav th:replace="fragments/nav"></nav>
+<main class="hero is-primary is-fullheight-with-navbar">
+  <div class="hero-body">
+    <div class="container">
+      <form th:action="@{/parcel/register}" method="post" th:object="${parcel}" class="box">
+        <h2 class="is-size-2">Destinatario</h2>
+        <div class="columns is-centered">
+          <div class="column">
+            <h3 class="is-size-3">Datos personales</h3>
+            <div class="columns mb-0">
+              <div class="column">
+                <div class="field">
+                  <label for="name" class="label">Nombre</label>
+                  <div class="control">
+                    <input type="text" class="input" id="name" placeholder="Edward" required="true"
+                           th:field="*{recipient.name}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label for="surname" class="label">Apellidos</label>
+                  <div class="control">
+                    <input type="text" class="input" id="surname" placeholder="Snowden" required="true"
+                           th:field="*{recipient.lastName}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="columns mb-0">
+              <div class="column">
+                <div class="field">
+                  <label for="email" class="label">Email</label>
+                  <div class="control has-icons-left">
+                    <input type="email" class="input" id="email" placeholder="snowden@not-the-cia.gov" required="true"
+                           th:field="*{recipient.email}"/>
+                    <span class="icon is-small is-left"><i class="fa fa-envelope"></i></span>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label for="dni" class="label">DNI</label>
+                  <div class="control">
+                    <input type="text" class="input" id="dni" placeholder="12345678A" required="true"
+                           th:field="*{recipient.DNI}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="column">
+            <h3 class="is-size-3">Domicilio</h3>
+            <div class="columns mb-0">
+              <div class="column is-8">
+                <div class="field">
+                  <label for="street" class="label">Calle</label>
+                  <div class="control">
+                    <input type="text" class="input" id="street" placeholder="Avenida del Paraíso" required="true"
+                           th:field="*{recipient.location.calle}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label for="city" class="label">Localidad</label>
+                  <div class="control">
+                    <input type="text" class="input" id="city" placeholder="Madrid" required="true"
+                           th:field="*{recipient.location.ciudad}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="columns mb-0">
+              <div class="column">
+                <div class="field">
+                  <label for="num" class="label">Número</label>
+                  <div class="control">
+                    <input type="number" class="input" id="num" placeholder="Madrid" required="true"
+                           th:field="*{recipient.location.numero}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label for="floor" class="label">Piso</label>
+                  <div class="control">
+                    <input type="text" class="input" id="floor" placeholder="Bajo" required="true"
+                           th:field="*{recipient.location.piso}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <label for="door" class="label">Puerta</label>
+                  <div class="control">
+                    <input type="text" class="input" id="door" placeholder="Izquierda" required="true"
+                           th:field="*{recipient.location.puerta}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <h2 class="is-size-2">Paquete</h2>
+            <h3 class="is-size-3">Dimensiones</h3>
+            <div class="columns">
+              <div class="column is-2">
+                <div class="field">
+                  <label for="weight" class="label">Ancho</label>
+                  <div class="control">
+                    <input type="number" class="input" id="weight" placeholder="3.6 kg" required="true"
+                           th:field="*{weight}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column is-2">
+                <div class="field">
+                  <label for="height" class="label">Alto</label>
+                  <div class="control">
+                    <input type="number" class="input" id="height" placeholder="26 cm" required="true"
+                           th:field="*{height}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column is-2">
+                <div class="field">
+                  <label for="depth" class="label">Profundidad</label>
+                  <div class="control">
+                    <input type="number" class="input" id="depth" placeholder="26 cm" required="true"
+                           th:field="*{depth}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="columns is-justify-content-flex-end">
+          <div class="column is-narrow">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <div class="field">
+              <button type="submit" class="button is-success">
+                Registrar envío
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+</body>
+</html>
