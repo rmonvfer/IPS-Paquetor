@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" class="is-clipped">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head"></head>
 <body>
 <nav th:replace="fragments/nav"></nav>
@@ -16,7 +16,7 @@
                                        th:field="*{name}"
                                        name="name"
                                        id="name"
-                                       placeholder="Jason" required="true" />
+                                       placeholder="Edward" required="true" />
                             </div>
                         </div>
 
@@ -27,7 +27,7 @@
                                        name="surname"
                                        th:field="*{lastName}"
                                        id="surname"
-                                       placeholder="Bourne" required="true" />
+                                       placeholder="Snowden" required="true" />
                             </div>
                         </div>
 
@@ -39,7 +39,7 @@
                                        id="email"
                                        th:field="*{email}"
                                        name="email"
-                                       placeholder="usuario@email.com" required="true" />
+                                       placeholder="snowden@not-the-cia.gov" required="true" />
                                 <span class="icon is-small is-left"><i class="fa fa-envelope"></i></span>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="field">
                             <button type="submit" class="button is-success">
-                                Iniciar sesión
+                                Enviar
                             </button>
                         </div>
                     </form>

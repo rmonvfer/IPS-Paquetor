@@ -18,18 +18,18 @@
                         <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
                             <tr>
                                 <th>Destinatario</th>
-                                <th>Fecha registro</th>
+                                <th>Estado</th>
                                 <th>Detalles</th>
                             </tr>
-                            <tr>
-                                <td>Federico García Lorca</td>
-                                <td>15/05/2019</td>
-                                <td><a class="button is-info is-fullwidth is-small">Consultar</a></td>
-                            </tr>
-                            <tr>
-                                <td>Federico García Lorca</td>
-                                <td>15/05/2019</td>
-                                <td><a class="button is-info is-fullwidth is-small">Consultar</a></td>
+                            <tr th:each="sentParcel: ${sentParcels}">
+                                <td th:text="${sentParcel.recipient.getName()}"></td>
+                                <td th:text="${sentParcel.getStatus()}"></td>
+                                <td>
+                                    <a class="button is-info is-fullwidth is-small"
+                                       th:href="${'/parcel/detail/' + sentParcel.id}">
+                                        Consultar
+                                    </a>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -42,6 +42,25 @@
                             Recibidos
                         </p>
                     </header>
+                    <div class="card-content">
+                        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                            <tr>
+                                <th>Emisor</th>
+                                <th>Estado</th>
+                                <th>Detalles</th>
+                            </tr>
+                            <tr th:each="receivedParcel: ${receivedParcels}">
+                                <td th:text="${receivedParcel.sender.getName()}"></td>
+                                <td th:text="${receivedParcel.getStatus()}"></td>
+                                <td>
+                                    <a class="button is-info is-fullwidth is-small"
+                                       th:href="${'/parcel/detail/' + receivedParcel.id}">
+                                        Consultar
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

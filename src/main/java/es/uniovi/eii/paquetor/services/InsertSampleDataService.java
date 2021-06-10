@@ -5,6 +5,7 @@ import es.uniovi.eii.paquetor.entities.locations.Home;
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
+import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.RoutesRepository;
 import lombok.extern.log4j.Log4j2;
@@ -112,6 +113,9 @@ public class InsertSampleDataService {
         // User1 -> User2 con recogida a domicilio (REMOTE)
         UUID u1_to_u2_uuid = parcelsService.registerNewParcel(user1, user2, 120.0, 190.0, 140.0);
         parcelsService.processParcelPickupOrder(parcelsService.getParcel(u1_to_u2_uuid), ParcelPickupOrderType.REMOTE);
+
+        // Simular un cambio de estado (este debería ser ilegal, no puede pasarse de pendiente de recogida a en reparto)
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_DELIVERY);
 
         // User2 -> User1 con recogida a domicilio (REMOTE)
         UUID u2_to_u1_uuid = parcelsService.registerNewParcel(user2, user1, 120.0, 190.0, 140.0);
