@@ -39,6 +39,7 @@ public class InsertSampleDataService {
         String password = "password";
 
         /* Insertar domicilios */
+        log.info("Inserting homes...");
         Location ramonHome = new Home()
                 .setCiudad("Oviedo")
                 .setCalle("Avenida del Olmo")
@@ -64,6 +65,7 @@ public class InsertSampleDataService {
         locationsService.addLocation(u2Home);
 
         /* Insertar almacenes */
+        log.info("Inserting warehouses...");
         Route oviedoInternalRoute = new Route();
         routesRepository.save(oviedoInternalRoute);
 
@@ -77,6 +79,7 @@ public class InsertSampleDataService {
         locationsService.addLocation(warehouseOviedo);
 
         /* Insertar usuarios */
+        log.info("Inserting customers...");
         CustomerUser ramon = new CustomerUser("ramonvilafer@gmail.com");
         ramon.setId(UUID.randomUUID())
                 .setName("ramon")
@@ -104,6 +107,7 @@ public class InsertSampleDataService {
                 .setLocation(u2Home);
         usersService.addCustomer(user2);
 
+        log.info("Inserting parcels...");
         /* Insertar paquetes */
         // User1 -> User2 con recogida a domicilio (REMOTE)
         UUID u1_to_u2_uuid = parcelsService.registerNewParcel(user1, user2, 120.0, 190.0, 140.0);
@@ -113,6 +117,6 @@ public class InsertSampleDataService {
         UUID u2_to_u1_uuid = parcelsService.registerNewParcel(user2, user1, 120.0, 190.0, 140.0);
         parcelsService.processParcelPickupOrder(parcelsService.getParcel(u2_to_u1_uuid), ParcelPickupOrderType.REMOTE);
 
-        log.debug("Datos de prueba correctamente insertados");
+        log.info("Sample data successfully inserted");
     }
 }
