@@ -3,6 +3,7 @@ package es.uniovi.eii.paquetor.services;
 import es.uniovi.eii.paquetor.entities.users.BaseUser;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.UsersRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Log4j2
 public class UsersService {
 
     @Autowired
@@ -50,6 +52,7 @@ public class UsersService {
      * @param user Cliente a registrar
      */
     public void addCustomer(CustomerUser user) {
+        log.error("Adding customer with values: " + user);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPasswordConfirm()));
         user.setId(UUID.randomUUID());
         usersRepository.save(user);

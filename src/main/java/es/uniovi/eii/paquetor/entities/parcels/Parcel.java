@@ -3,6 +3,7 @@ package es.uniovi.eii.paquetor.entities.parcels;
 import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
 public class Parcel {
 
     @Id
-    @GeneratedValue
+    @Type(type = "uuid-char")
     private UUID id;
 
     public Parcel() { /**/ }

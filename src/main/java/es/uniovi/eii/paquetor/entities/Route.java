@@ -20,6 +20,6 @@ public class Route {
     private Long id;
 
     @JoinColumn(name = "ROUTE_ID")
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RouteStop> routeStops;
 }

@@ -96,7 +96,7 @@ public class InsertSampleDataService {
         usersService.addCustomer(user1);
 
         CustomerUser user2 = new CustomerUser("cu2@email.com");
-        user1.setId(UUID.randomUUID())
+        user2.setId(UUID.randomUUID())
                 .setName("Customer 2")
                 .setLastName("Second")
                 .setDNI("12345678C")

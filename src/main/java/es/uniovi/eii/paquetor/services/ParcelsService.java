@@ -45,13 +45,14 @@ public class ParcelsService {
      * @return UUID, identificador único aleatorio del paquete.
      */
     public UUID registerNewParcel(CustomerUser sender, CustomerUser recipient, Double height, Double width, Double depth) {
+        log.info("Registering new parcel with sender Id="+sender.getId());
         UUID parcelUUID = UUID.randomUUID();
         Parcel newParcel =
                 new Parcel(sender, recipient).setId(parcelUUID).setDepth(depth)
                         .setHeight(height).setWidth(width).setStatus(ParcelStatus.NOT_PROCESSED);
         parcelsRepository.save(newParcel);
 
-        log.debug("Registrado nuevo paquete en el sistema " + newParcel);
+        log.info("Registrado nuevo paquete en el sistema " + newParcel);
 
         return parcelUUID;
     }
@@ -70,7 +71,7 @@ public class ParcelsService {
         CustomerUser sender    = parcel.getSender();
         CustomerUser recipient = parcel.getRecipient();
 
-        log.debug("Procesando orden de recogida para el paquete " + parcel);
+        log.info("Procesando orden de recogida para el paquete " + parcel);
 
         // Buscar el almacén correspondiente a esa ubicación
         Warehouse senderReferenceWarehouse =
@@ -84,7 +85,7 @@ public class ParcelsService {
             // Añadir una parada de recogida en la ruta interna del almacén de referencia para el emisor
             warehousesService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
 
-            log.debug("Orden de recogida registrada correctamente.");
+            log.info("Orden de recogida registrada correctamente.");
         }
     }
 
@@ -109,6 +110,7 @@ public class ParcelsService {
     }
 
     public Parcel getParcel(UUID id) {
+        log.info("Attempting to get Parcel with uuid="+ id);
         return parcelsRepository.findById(id).get();
     }
 

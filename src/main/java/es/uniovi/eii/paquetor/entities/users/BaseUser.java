@@ -2,6 +2,7 @@ package es.uniovi.eii.paquetor.entities.users;
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public abstract class BaseUser {
     }
 
     @Id
-    @GeneratedValue
+    @Type(type = "uuid-char")
     private UUID id;
 
     @Column(nullable = false, unique = true, length = 45)
@@ -36,7 +37,7 @@ public abstract class BaseUser {
     protected String role;
 
     @JoinColumn(name = "LOCATION_ID")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Location location;
 
     @Transient

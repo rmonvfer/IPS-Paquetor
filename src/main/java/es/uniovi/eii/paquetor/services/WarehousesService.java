@@ -9,8 +9,6 @@ import es.uniovi.eii.paquetor.repositories.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class WarehousesService {
 
@@ -25,7 +23,7 @@ public class WarehousesService {
     public void addParcelToInternalRoute(Parcel parcel, RouteStopType stopType) {
         CustomerUser sender = parcel.getSender();
         Warehouse senderReferenceWarehouse =
-                (Warehouse) locationsRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
+                locationsRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
 
         // Crear una parada de ruta e introducir el paquete y el tipo de parada
         RouteStop customerRouteStop = new RouteStop(parcel, stopType);
@@ -34,6 +32,6 @@ public class WarehousesService {
     }
 
     public Warehouse findByCiudad(String ciudad) {
-        return (Warehouse) locationsRepository.findByCiudadIgnoreCase(ciudad);
+        return locationsRepository.findByCiudadIgnoreCase(ciudad);
     }
 }

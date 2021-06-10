@@ -24,6 +24,6 @@ public class Warehouse extends Location {
     private Route internalRoute;
 
     @JoinColumn(name = "EXTERNAL_WAREHOUSE_ID")
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Warehouse> externalWarehouses;
 }
