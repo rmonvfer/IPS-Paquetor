@@ -25,6 +25,9 @@ public class UsersService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    RolesService rolesService;
+
     @PostConstruct
     public void init() { /**/ }
 
@@ -53,6 +56,7 @@ public class UsersService {
      */
     public void addCustomer(CustomerUser user) {
         log.error("Adding customer with values: " + user);
+        user.setRole(rolesService.getRoles()[0]);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPasswordConfirm()));
         user.setId(UUID.randomUUID());
         usersRepository.save(user);
