@@ -8,9 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -41,5 +39,17 @@ public class ParcelsController {
 
         model.addAttribute("newParcel", parcelsService.getParcel(new_parcel_uuid));
         return "parcels/newParcelRegistered";
+    }
+
+    @GetMapping({"/parcel/detail"})
+    public String getParcelDetail(@RequestParam(required = false) String uuid, Model model){
+        if (uuid != null) {
+            Parcel foundParcel = parcelsService.getParcel(UUID.fromString(uuid));
+            if (foundParcel != null) {
+                model.addAttribute("foundParcel", foundParcel);
+                return "parcels/parcelDetails";
+            }
+        }
+        return "parcels/parcelTrackingForm";
     }
 }

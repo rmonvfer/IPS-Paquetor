@@ -3,7 +3,9 @@ import es.uniovi.eii.paquetor.entities.RouteStopType;
 import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
+import es.uniovi.eii.paquetor.entities.parcels.ParcelState;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
+import es.uniovi.eii.paquetor.repositories.ParcelStateRepository;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +29,9 @@ public class ParcelsService {
 
     @Autowired
     LocationsService locationsService;
+
+    @Autowired
+    ParcelStateRepository parcelStateRepository;
 
     @Autowired
     UsersService usersService;
@@ -48,7 +54,7 @@ public class ParcelsService {
      * @param depth Profundidad del paquete
      * @return UUID, identificador único aleatorio del paquete.
      */
-    public UUID registerNewParcel(User sender, User recipient, Double height, Double width, Double depth) {
+    public UUID registerNewParcel(User sender, User recipient, Double weight, Double height, Double width, Double depth) {
         UUID parcelUUID = UUID.randomUUID();
         log.info(String.format("Registering a new Parcel {UUID=%s, sender=%s, recipient=%s, h=%f, w=%f, d=%f}",
                 parcelUUID, sender, recipient, height, width, depth));
@@ -70,8 +76,10 @@ public class ParcelsService {
         }
 
         Parcel newParcel = new Parcel(sender, recipient)
-                .setId(parcelUUID).setDepth(depth).setHeight(height).setWidth(width)
-                .setStatus(ParcelStatus.NOT_PROCESSED);
+                .setId(parcelUUID).setDepth(depth).setHeight(height).setWidth(width).setWeight(weight);
+
+        // Establecer el estado inicial como "No procesado"
+        updateParcelStatus(newParcel, ParcelStatus.NOT_PROCESSED);
         parcelsRepository.save(newParcel);
 
         log.info("Parcel with UUID " + parcelUUID + " has been registered successfully!");
@@ -86,7 +94,8 @@ public class ParcelsService {
      */
     public UUID registerNewParcel(Parcel parcel) {
         return registerNewParcel(
-                parcel.getSender(), parcel.getRecipient(), parcel.getHeight(), parcel.getWidth(), parcel.getDepth());
+                parcel.getSender(), parcel.getRecipient(),
+                parcel.getWeight(), parcel.getHeight(), parcel.getWidth(), parcel.getDepth());
     }
 
     /**
@@ -125,8 +134,13 @@ public class ParcelsService {
     //TODO: Impedir cambios de estado aleatorios, desde un estado concreto solo debe poder 
     //      cambiarse a una serie concreta y limitada de estados.
     public void updateParcelStatus(Parcel parcel, ParcelStatus parcelStatus) {
-        log.info("Updating status for " + parcel);
-        parcel.setStatus(parcelStatus);
+        UUID newParcelStateUUID = UUID.randomUUID();
+        ParcelState newParcelState = new ParcelState().setId(newParcelStateUUID)
+                .setStatus(parcelStatus).setUpdated_date(new Date());
+        parcelStateRepository.save(newParcelState);
+        parcel.getStatesRecord().add(parcelStateRepository.findById(newParcelStateUUID).get());
+
+        log.info("Updating parcel status with " + parcelStateRepository.findById(newParcelStateUUID).get());
         parcelsRepository.save(parcel);
     }
 

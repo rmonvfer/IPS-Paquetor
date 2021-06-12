@@ -109,16 +109,43 @@ public class InsertSampleDataService {
 
         /* Insertar paquetes */
         // User1 -> User2 con recogida a domicilio (REMOTE)
-        UUID u1_to_u2_uuid = parcelsService.registerNewParcel(user1, user2, 120.0, 190.0, 140.0);
-        parcelsService.processParcelPickupOrder(parcelsService.getParcel(u1_to_u2_uuid), ParcelPickupOrderType.REMOTE);
+        UUID u1_to_u2_uuid = parcelsService.registerNewParcel(
+                user1, user2, 12.0, 120.0, 190.0, 140.0);
+        parcelsService.processParcelPickupOrder(
+                parcelsService.getParcel(u1_to_u2_uuid), ParcelPickupOrderType.REMOTE);
 
-        // Simular un cambio de estado (este debería ser ilegal, no puede pasarse de pendiente de recogida a en reparto)
+        log.info("Emulating state change for Parcel " + parcelsService.getParcel(u1_to_u2_uuid));
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_PICKUP);
+        wait(5);
+
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_ORIGIN);
+        wait(5);
+
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_DESTINY);
+        wait(5);
+
         parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_DELIVERY);
+        wait(5);
+
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.DELIVERED);
+        wait(6);
+
+        log.info("Status change result: " + parcelsService.getParcel(u1_to_u2_uuid));
 
         // User2 -> User1 con recogida a domicilio (REMOTE)
-        UUID u2_to_u1_uuid = parcelsService.registerNewParcel(user2, user1, 120.0, 190.0, 140.0);
-        parcelsService.processParcelPickupOrder(parcelsService.getParcel(u2_to_u1_uuid), ParcelPickupOrderType.REMOTE);
+        UUID u2_to_u1_uuid = parcelsService.registerNewParcel(
+                user2, user1, 12.0, 120.0, 190.0, 140.0);
+        parcelsService.processParcelPickupOrder(
+                parcelsService.getParcel(u2_to_u1_uuid), ParcelPickupOrderType.REMOTE);
 
         log.info("Sample data successfully inserted");
+    }
+
+    private void wait(int secondsToSleep) {
+        try {
+            Thread.sleep(secondsToSleep * 1000L);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

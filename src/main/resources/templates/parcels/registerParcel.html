@@ -113,6 +113,9 @@
           <div class="column">
             <h2 class="is-size-2">Paquete</h2>
             <h3 class="is-size-3">Dimensiones</h3>
+            <p class="subtitle has-text-black">
+              Ten en cuenta que estos datos serán revisados en el momento de la recogida
+            </p>
             <div class="columns">
               <div class="column is-2">
                 <div class="field">
@@ -138,6 +141,15 @@
                   <div class="control">
                     <input type="number" class="input" id="depth" placeholder="26 cm" required="true"
                            th:field="*{depth}"/>
+                  </div>
+                </div>
+              </div>
+              <div class="column is-2">
+                <div class="field">
+                  <label for="weight" class="label">Peso</label>
+                  <div class="control">
+                    <input type="number" class="input" id="weight" placeholder="1 kg" required="true"
+                           th:field="*{weight}"/>
                   </div>
                 </div>
               </div>

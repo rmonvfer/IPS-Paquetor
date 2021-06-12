@@ -3,13 +3,15 @@
 <head th:replace="fragments/head"></head>
 <body>
 <nav class="is-primary" th:insert="fragments/nav"></nav>
-<section class="section">
-    <div class="hero container is-primary">
+<section class="section is-primary">
+    <div class="hero container">
         <div class="hero-body">
             <div class="container has-text-centered">
-                <h2 class="is-size-2">¡Envío registrado!</h2>
-                <p class="subtitle">Puedes consultar su estado en todo momento con el código siguiente código:</p>
-                <div class="box m-3 p-2">
+                <h2 class="is-size-2 has-text-weight-bold">¡Envío registrado!</h2>
+                <p class="subtitle has-text-weight-bold">
+                    Puedes consultar su estado en todo momento con el siguiente código:
+                </p>
+                <div class="box m-3 p-2 has-text-black has-text-weight-bold">
                     <p th:text="${newParcel.getId()}"></p>
                 </div>
             </div>

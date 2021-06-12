@@ -3,14 +3,17 @@ package es.uniovi.eii.paquetor.entities.parcels;
 import es.uniovi.eii.paquetor.entities.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.extern.log4j.Log4j2;
+import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
 @Accessors(chain = true)
+@Log4j2
 public class Parcel {
 
     @Id
@@ -22,6 +25,7 @@ public class Parcel {
     public Parcel(User sender, User recipient) {
         setSender(sender);
         setRecipient(recipient);
+        statesRecord = new LinkedList<>();
     }
 
     @Column(name = "HEIGHT", nullable = false)
@@ -34,11 +38,7 @@ public class Parcel {
     private Double depth;
 
     @Column(name = "WEIGHT")
-    private String weight;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "STATUS", nullable = false)
-    private ParcelStatus status;
+    private Double weight;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
@@ -47,6 +47,26 @@ public class Parcel {
     @ManyToOne
     @JoinColumn(name = "recipient_id")
     private User recipient;
+
+    @OrderBy("updated_date ASC")
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "parcel_id")
+    private List<ParcelState> statesRecord;
+
+    /**
+     * Devuelve el estado actual del paquete
+     * @return estado actual
+     */
+    public ParcelState getCurrentState() {
+        ParcelState current;
+        try {
+            current = statesRecord.get(statesRecord.size() -1);
+
+        } catch (Exception exception) {
+            current = null;
+        }
+        return current;
+    }
 
     /**
      * Indica si un paquete debe entregarse mediante una ruta interna

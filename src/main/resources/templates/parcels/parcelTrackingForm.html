@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body>
+<nav th:replace="fragments/nav"></nav>
+
+<main class="hero is-primary is-fullheight-with-navbar">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="is-size-2 has-text-weight-bold">Consulta el estado de tu envío</h2>
+      <p class="subtitle has-text-weight-bold">
+        Introduce el código de seguimiento a continuación
+      </p>
+      <div class="columns is-centered mt-2">
+        <div class="column is-three-quarters-desktop">
+          <form th:action="@{/parcel/detail}" method="get" class="box">
+            <div class="field has-addons">
+              <div class="control is-flex-grow-1">
+                <label>
+                  <input class="input" name="uuid" type="text" placeholder="656c1236-6d67-49ae-af2e-73d930d0692b" required>
+                </label>
+              </div>
+              <div class="control">
+                <button type="submit" class="button is-info">Buscar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

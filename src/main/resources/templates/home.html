@@ -23,10 +23,10 @@
                             </tr>
                             <tr th:each="sentParcel: ${sentParcels}">
                                 <td th:text="${sentParcel.recipient.getName()}"></td>
-                                <td th:text="${sentParcel.getStatus()}"></td>
+                                <td th:text="${sentParcel.getCurrentState().getNiceStatus()}"></td>
                                 <td>
                                     <a class="button is-info is-fullwidth is-small"
-                                       th:href="${'/parcel/detail/' + sentParcel.id}">
+                                       th:href="${'/parcel/detail?uuid=' + sentParcel.id}">
                                         Consultar
                                     </a>
                                 </td>
@@ -51,10 +51,10 @@
                             </tr>
                             <tr th:each="receivedParcel: ${receivedParcels}">
                                 <td th:text="${receivedParcel.sender.getName()}"></td>
-                                <td th:text="${receivedParcel.getStatus()}"></td>
+                                <td th:text="${receivedParcel.getCurrentState().getNiceStatus()}"></td>
                                 <td>
                                     <a class="button is-info is-fullwidth is-small"
-                                       th:href="${'/parcel/detail/' + receivedParcel.id}">
+                                       th:href="${'/parcel/detail?uuid=' + receivedParcel.id}">
                                         Consultar
                                     </a>
                                 </td>

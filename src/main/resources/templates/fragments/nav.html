@@ -1,6 +1,6 @@
 <nav class="navbar" role="navigation" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="navbar-brand">
-        <a class="navbar-item">
+        <a class="navbar-item" href="/">
             <strong><em>PAQUETOR</em></strong>
         </a>
         <a role="button" class="navbar-burger" data-target="navbarBasicExample">
@@ -12,6 +12,10 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
+            <a class="navbar-item" th:href="@{/home}">
+                <i class="fas fa-home"></i>
+                <span class="ml-1">Mis paquetes</span>
+            </a>
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     <i class="fas fa-box-open"></i>
@@ -22,7 +26,7 @@
                         <i class="fas fa-plus"></i>
                         <span class="ml-1">Nuevo envío</span>
                     </a>
-                    <a class="navbar-item" th:href="@{/parcel/status}">
+                    <a class="navbar-item" th:href="@{/parcel/detail}">
                         <i class="fas fa-search"></i>
                         <span class="ml-1">Consultar el estado de un envío</span>
                     </a>

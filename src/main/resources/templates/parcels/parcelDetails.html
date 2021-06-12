@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
 <body>
+<nav th:replace="fragments/nav"></nav>
 
+<main class="hero is-primary is-fullheight-with-navbar">
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <h2 class="is-size-2 has-text-weight-bold">Detalles del envío</h2>
+            <p class="subtitle has-text-weight-bold" th:text="${'ID ' + foundParcel.getId()}"></p>
+            <div class="columns is-centered mt-2 box">
+                <div class="column is-three-quarters-desktop">
+                    <div class="timeline">
+                        <header class="timeline-header">
+                            <span class="tag is-medium is-primary">Envío registrado</span>
+                        </header>
+                        <div class="timeline-item" th:each="stateRecord: ${foundParcel.statesRecord}">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <p class="heading" th:text="${stateRecord.updated_date.toLocaleString()}"></p>
+                                <p th:text="${stateRecord.getNiceStatus()}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${foundParcel.currentState.hasBeenDelivered()}" class="timeline-header">
+                            <span class="tag is-medium is-primary">Entregado</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>
