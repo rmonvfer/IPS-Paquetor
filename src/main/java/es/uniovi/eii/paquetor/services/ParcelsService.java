@@ -1,7 +1,6 @@
 package es.uniovi.eii.paquetor.services;
 import es.uniovi.eii.paquetor.entities.RouteStopType;
 import es.uniovi.eii.paquetor.entities.User;
-import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
@@ -26,6 +25,9 @@ public class ParcelsService {
     WarehousesService warehousesService;
 
     @Autowired
+    LocationsService locationsService;
+
+    @Autowired
     UsersService usersService;
 
     @PostConstruct
@@ -48,11 +50,31 @@ public class ParcelsService {
      */
     public UUID registerNewParcel(User sender, User recipient, Double height, Double width, Double depth) {
         UUID parcelUUID = UUID.randomUUID();
-        Parcel newParcel =
-                new Parcel(sender, recipient).setId(parcelUUID).setDepth(depth)
-                        .setHeight(height).setWidth(width).setStatus(ParcelStatus.NOT_PROCESSED);
+        log.info(String.format("Registering a new Parcel {UUID=%s, sender=%s, recipient=%s, h=%f, w=%f, d=%f}",
+                parcelUUID, sender, recipient, height, width, depth));
+
+        // Obtener los datos del usuario de la base de datos (los datos recibidos son del formulario)
+        User realRecipient = usersService.getUserByEmail(recipient.getEmail());
+
+        // Si hay un usuario registrado con ese email, usarlo.
+        if (realRecipient != null) {
+            recipient = realRecipient;
+            log.info("Parcel recipient already exists, it's " + realRecipient);
+
+        // Si no, entonces crear un usuario deshabilitado (no puede iniciar sesión)
+        } else {
+            // Registrar también su domicilio.
+            locationsService.addLocation(recipient.getLocation());
+            usersService.addDisabledCustomer(recipient);
+            log.info("Parcel recipient doesn't exist, a temporary one has been created");
+        }
+
+        Parcel newParcel = new Parcel(sender, recipient)
+                .setId(parcelUUID).setDepth(depth).setHeight(height).setWidth(width)
+                .setStatus(ParcelStatus.NOT_PROCESSED);
         parcelsRepository.save(newParcel);
 
+        log.info("Parcel with UUID " + parcelUUID + " has been registered successfully!");
         return parcelUUID;
     }
 
@@ -79,17 +101,19 @@ public class ParcelsService {
      */
     public void processParcelPickupOrder(Parcel parcel, ParcelPickupOrderType pickupOrderType) {
 
-        log.info("Procesando orden de recogida para el paquete " + parcel);
+        log.info("Received a ParcelPickupOrder for Parcel " + parcel);
 
         // Si el cliente ha solicitado una recogida
         if (pickupOrderType == ParcelPickupOrderType.REMOTE) {
+            log.info("Sender has requested a REMOTE pickup");
+
             // Marcar el paquete como pendiente de recogida.
             updateParcelStatus(parcel, ParcelStatus.PICKUP_PENDING);
 
             // Añadir una parada de recogida en la ruta interna del almacén de referencia para el emisor
             warehousesService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
 
-            log.info("Orden de recogida registrada correctamente.");
+            log.info("ParcelPickupOrder successfully processed!");
         }
     }
 
@@ -101,6 +125,7 @@ public class ParcelsService {
     //TODO: Impedir cambios de estado aleatorios, desde un estado concreto solo debe poder 
     //      cambiarse a una serie concreta y limitada de estados.
     public void updateParcelStatus(Parcel parcel, ParcelStatus parcelStatus) {
+        log.info("Updating status for " + parcel);
         parcel.setStatus(parcelStatus);
         parcelsRepository.save(parcel);
     }

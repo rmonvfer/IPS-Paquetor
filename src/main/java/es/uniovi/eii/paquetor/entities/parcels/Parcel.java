@@ -36,17 +36,17 @@ public class Parcel {
     @Column(name = "WEIGHT")
     private String weight;
 
-    @JoinColumn(name = "SENDER_ID", nullable = false)
-    @OneToOne(optional = false, orphanRemoval = true)
-    private User sender;
-
-    @JoinColumn(name = "RECIPIENT_ID", nullable = false)
-    @OneToOne(optional = false, orphanRemoval = true)
-    private User recipient;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private ParcelStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "recipient_id")
+    private User recipient;
 
     /**
      * Indica si un paquete debe entregarse mediante una ruta interna

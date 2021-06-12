@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
 <body>
-
+<nav class="is-primary" th:insert="fragments/nav"></nav>
+<section class="section">
+    <div class="hero container is-primary">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <h2 class="is-size-2">¡Envío registrado!</h2>
+                <p class="subtitle">Puedes consultar su estado en todo momento con el código siguiente código:</p>
+                <div class="box m-3 p-2">
+                    <p th:text="${newParcel.getId()}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

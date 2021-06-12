@@ -54,11 +54,23 @@ public class UsersService {
      * @param user Cliente a registrar
      */
     public void addCustomer(User user) {
-        log.error("Adding customer with values: " + user);
-        user.setRole(rolesService.getRoles()[0]);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPasswordConfirm()));
-        user.setId(UUID.randomUUID());
+        user.setRole(rolesService.getRoles()[0])
+            .setPassword(bCryptPasswordEncoder.encode(user.getPasswordConfirm()))
+            .setId(UUID.randomUUID());
         usersRepository.save(user);
+        log.info("Added Customer with values: " + user);
+    }
+
+    /**
+     * Registra un cliente deshabilitado
+     * @param user Cliente a registrar
+     */
+    public void addDisabledCustomer(User user) {
+        user.setRole(rolesService.getRoles()[0])
+            .setId(UUID.randomUUID())
+            .setDisabled(true);
+        usersRepository.save(user);
+        log.info("Added DisabledCustomer with values: " + user);
     }
 
     /**

@@ -19,7 +19,7 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JoinColumn(name = "ROUTE_ID")
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "route_id")
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private List<RouteStop> routeStops;
 }

@@ -40,6 +40,6 @@ public class ParcelsController {
                 parcelsService.getParcel(new_parcel_uuid), ParcelPickupOrderType.REMOTE);
 
         model.addAttribute("newParcel", parcelsService.getParcel(new_parcel_uuid));
-        return "redirect:parcels/newParcelRegistered";
+        return "parcels/newParcelRegistered";
     }
 }

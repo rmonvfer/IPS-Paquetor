@@ -82,8 +82,7 @@ public class InsertSampleDataService {
         /* Insertar usuarios */
         log.info("Inserting customers...");
         User ramon = new User("ramonvilafer@gmail.com");
-        ramon.setId(UUID.randomUUID())
-                .setName("ramon")
+        ramon.setName("ramon")
                 .setLastName("vila")
                 .setDNI("71881410H") // Tampoco es de verdad
                 .setPasswordConfirm(password)
@@ -91,8 +90,7 @@ public class InsertSampleDataService {
         usersService.addCustomer(ramon);
 
         User user1 = new User("cu1@email.com");
-        user1.setId(UUID.randomUUID())
-                .setName("Customer 1")
+        user1.setName("Customer 1")
                 .setLastName("First")
                 .setDNI("12345678B")
                 .setPasswordConfirm(password)
@@ -100,8 +98,7 @@ public class InsertSampleDataService {
         usersService.addCustomer(user1);
 
         User user2 = new User("cu2@email.com");
-        user2.setId(UUID.randomUUID())
-                .setName("Customer 2")
+        user2.setName("Customer 2")
                 .setLastName("Second")
                 .setDNI("12345678C")
                 .setPasswordConfirm(password)
@@ -109,6 +106,7 @@ public class InsertSampleDataService {
         usersService.addCustomer(user2);
 
         log.info("Inserting parcels...");
+
         /* Insertar paquetes */
         // User1 -> User2 con recogida a domicilio (REMOTE)
         UUID u1_to_u2_uuid = parcelsService.registerNewParcel(user1, user2, 120.0, 190.0, 140.0);

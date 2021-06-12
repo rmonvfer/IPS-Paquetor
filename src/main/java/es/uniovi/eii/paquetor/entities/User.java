@@ -37,7 +37,7 @@ public class User {
     protected String role;
 
     @JoinColumn(name = "LOCATION_ID")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private Location location;
 
     @Transient
