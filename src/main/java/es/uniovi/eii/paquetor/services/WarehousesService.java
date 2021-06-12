@@ -2,9 +2,9 @@ package es.uniovi.eii.paquetor.services;
 
 import es.uniovi.eii.paquetor.entities.RouteStop;
 import es.uniovi.eii.paquetor.entities.RouteStopType;
+import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
-import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class WarehousesService {
      * @param parcel paquete a añadir.
      */
     public void addParcelToInternalRoute(Parcel parcel, RouteStopType stopType) {
-        CustomerUser sender = parcel.getSender();
+        User sender = parcel.getSender();
         Warehouse senderReferenceWarehouse =
                 locationsRepository.findByCiudadIgnoreCase(sender.getLocation().getCiudad());
 

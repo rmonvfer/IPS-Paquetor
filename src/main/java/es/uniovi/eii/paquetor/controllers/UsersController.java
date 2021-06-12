@@ -1,6 +1,6 @@
 package es.uniovi.eii.paquetor.controllers;
 
-import es.uniovi.eii.paquetor.entities.users.CustomerUser;
+import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.services.ParcelsService;
 import es.uniovi.eii.paquetor.services.RolesService;
 import es.uniovi.eii.paquetor.services.SecurityService;
@@ -39,12 +39,12 @@ public class UsersController {
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new CustomerUser());
+        model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping(value = "/register")
-    public String signup(@ModelAttribute("user") CustomerUser user, Model model) {
+    public String signup(@ModelAttribute("user") User user, Model model) {
         user.setRole(rolesService.getRoles()[0]);
         usersService.addCustomer(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
@@ -53,7 +53,7 @@ public class UsersController {
 
     @GetMapping("/home")
     public String userHome(Model model) {
-        CustomerUser currentCustomer = usersService.getLoggedInUser();
+        User currentCustomer = usersService.getLoggedInUser();
         model.addAttribute("sentParcels", parcelsService.getCustomerSentParcels(currentCustomer));
         model.addAttribute("receivedParcels", parcelsService.getCustomerReceivedParcels(currentCustomer));
         return "home";

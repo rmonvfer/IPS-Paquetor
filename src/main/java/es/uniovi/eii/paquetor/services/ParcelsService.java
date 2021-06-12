@@ -1,11 +1,10 @@
 package es.uniovi.eii.paquetor.services;
 import es.uniovi.eii.paquetor.entities.RouteStopType;
+import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
-import es.uniovi.eii.paquetor.entities.users.CustomerUser;
-import es.uniovi.eii.paquetor.repositories.LocationsRepository;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class ParcelsService {
      * @param depth Profundidad del paquete
      * @return UUID, identificador único aleatorio del paquete.
      */
-    public UUID registerNewParcel(CustomerUser sender, CustomerUser recipient, Double height, Double width, Double depth) {
+    public UUID registerNewParcel(User sender, User recipient, Double height, Double width, Double depth) {
         UUID parcelUUID = UUID.randomUUID();
         Parcel newParcel =
                 new Parcel(sender, recipient).setId(parcelUUID).setDepth(depth)
@@ -64,9 +63,8 @@ public class ParcelsService {
      * @return ID del nuevo paquete registrado
      */
     public UUID registerNewParcel(Parcel parcel) {
-        UUID parcelUUID = registerNewParcel(
+        return registerNewParcel(
                 parcel.getSender(), parcel.getRecipient(), parcel.getHeight(), parcel.getWidth(), parcel.getDepth());
-        return parcelUUID;
     }
 
     /**
@@ -80,14 +78,8 @@ public class ParcelsService {
      * @param pickupOrderType tipo de orden de recogida.
      */
     public void processParcelPickupOrder(Parcel parcel, ParcelPickupOrderType pickupOrderType) {
-        CustomerUser sender    = parcel.getSender();
-        CustomerUser recipient = parcel.getRecipient();
 
         log.info("Procesando orden de recogida para el paquete " + parcel);
-
-        // Buscar el almacén correspondiente a esa ubicación
-        Warehouse senderReferenceWarehouse =
-                warehousesService.findByCiudad(sender.getLocation().getCiudad());
 
         // Si el cliente ha solicitado una recogida
         if (pickupOrderType == ParcelPickupOrderType.REMOTE) {
@@ -113,11 +105,11 @@ public class ParcelsService {
         parcelsRepository.save(parcel);
     }
 
-    public List<Parcel> getCustomerSentParcels(CustomerUser customer) {
+    public List<Parcel> getCustomerSentParcels(User customer) {
         return parcelsRepository.findAllSentByUser(customer);
     }
 
-    public List<Parcel> getCustomerReceivedParcels(CustomerUser customer) {
+    public List<Parcel> getCustomerReceivedParcels(User customer) {
         return parcelsRepository.findAllReceivedByUser(customer);
     }
 

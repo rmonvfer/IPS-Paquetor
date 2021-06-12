@@ -1,4 +1,4 @@
-package es.uniovi.eii.paquetor.entities.users;
+package es.uniovi.eii.paquetor.entities;
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,11 +12,11 @@ import java.util.UUID;
 @Accessors(chain = true)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type")
-public abstract class BaseUser {
+public class User {
 
-    public BaseUser(){ /**/ }
+    public User(){ /**/ }
 
-    public BaseUser(String email) {
+    public User(String email) {
         this.email = email;
     }
 
@@ -49,5 +49,6 @@ public abstract class BaseUser {
     @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
-    abstract void setRole();
+    @Column(name = "is_disabled", nullable = false)
+    private boolean isDisabled = false;
 }

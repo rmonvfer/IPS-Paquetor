@@ -1,6 +1,6 @@
 package es.uniovi.eii.paquetor.entities.parcels;
 
-import es.uniovi.eii.paquetor.entities.users.CustomerUser;
+import es.uniovi.eii.paquetor.entities.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
@@ -19,7 +19,7 @@ public class Parcel {
 
     public Parcel() { /**/ }
 
-    public Parcel(CustomerUser sender, CustomerUser recipient) {
+    public Parcel(User sender, User recipient) {
         setSender(sender);
         setRecipient(recipient);
     }
@@ -38,11 +38,11 @@ public class Parcel {
 
     @JoinColumn(name = "SENDER_ID", nullable = false)
     @OneToOne(optional = false, orphanRemoval = true)
-    private CustomerUser sender;
+    private User sender;
 
     @JoinColumn(name = "RECIPIENT_ID", nullable = false)
     @OneToOne(optional = false, orphanRemoval = true)
-    private CustomerUser recipient;
+    private User recipient;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)

@@ -1,7 +1,6 @@
 package es.uniovi.eii.paquetor.services;
 
-import es.uniovi.eii.paquetor.entities.users.BaseUser;
-import es.uniovi.eii.paquetor.entities.users.CustomerUser;
+import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.repositories.UsersRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,8 @@ public class UsersService {
      * Obtiene un listado de todos los usuarios del sistema: empleados y clientes.
      * @return Lista con los usuarios del sistema.
      */
-    public List<BaseUser> getUsers() {
-        List<BaseUser> users = new ArrayList<>();
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
         usersRepository.findAll().forEach(users::add);
         return users;
     }
@@ -46,15 +45,15 @@ public class UsersService {
      * @param id UUID del cliente
      * @return cliente si se encuentra, null en caso contrario.
      */
-    public CustomerUser getCustomer(UUID id) {
-        return (CustomerUser) usersRepository.findById(id).get();
+    public User getCustomer(UUID id) {
+        return usersRepository.findById(id).get();
     }
 
     /**
      * Registra un cliente.
      * @param user Cliente a registrar
      */
-    public void addCustomer(CustomerUser user) {
+    public void addCustomer(User user) {
         log.error("Adding customer with values: " + user);
         user.setRole(rolesService.getRoles()[0]);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPasswordConfirm()));
@@ -67,15 +66,15 @@ public class UsersService {
      * @param email email del cliente
      * @return cliente si se encuentra, null en caso contrario.
      */
-    public CustomerUser getUserByEmail(String email) {
-        return (CustomerUser) usersRepository.findByEmail(email);
+    public User getUserByEmail(String email) {
+        return usersRepository.findByEmail(email);
     }
 
     /**
      * Obtiene al usuario que ha iniciado sesión el el sistema.
      * @return Usuario.
      */
-    public CustomerUser getLoggedInUser() {
+    public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return getUserByEmail(auth.getName());
     }
@@ -84,7 +83,7 @@ public class UsersService {
         usersRepository.deleteById(id);
     }
 
-    public void editCustomer(CustomerUser user) {
+    public void editCustomer(User user) {
         usersRepository.save(user);
     }
 }

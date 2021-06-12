@@ -1,12 +1,12 @@
 package es.uniovi.eii.paquetor.services;
 
 import es.uniovi.eii.paquetor.entities.Route;
+import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.locations.Home;
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
-import es.uniovi.eii.paquetor.entities.users.CustomerUser;
 import es.uniovi.eii.paquetor.repositories.RoutesRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +81,7 @@ public class InsertSampleDataService {
 
         /* Insertar usuarios */
         log.info("Inserting customers...");
-        CustomerUser ramon = new CustomerUser("ramonvilafer@gmail.com");
+        User ramon = new User("ramonvilafer@gmail.com");
         ramon.setId(UUID.randomUUID())
                 .setName("ramon")
                 .setLastName("vila")
@@ -90,7 +90,7 @@ public class InsertSampleDataService {
                 .setLocation(ramonHome);
         usersService.addCustomer(ramon);
 
-        CustomerUser user1 = new CustomerUser("cu1@email.com");
+        User user1 = new User("cu1@email.com");
         user1.setId(UUID.randomUUID())
                 .setName("Customer 1")
                 .setLastName("First")
@@ -99,7 +99,7 @@ public class InsertSampleDataService {
                 .setLocation(u1Home);
         usersService.addCustomer(user1);
 
-        CustomerUser user2 = new CustomerUser("cu2@email.com");
+        User user2 = new User("cu2@email.com");
         user2.setId(UUID.randomUUID())
                 .setName("Customer 2")
                 .setLastName("Second")
