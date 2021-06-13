@@ -48,7 +48,7 @@ public class Parcel {
     @JoinColumn(name = "recipient_id")
     private User recipient;
 
-    @OrderBy("updated_date ASC")
+    @OrderBy("internal_index ASC")
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "parcel_id")
     private List<ParcelState> statesRecord;

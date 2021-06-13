@@ -5,7 +5,8 @@ package es.uniovi.eii.paquetor.entities.parcels;
  */
 public enum ParcelStatus {
     NOT_PROCESSED,              // Paquete registrado pero no hay nada que hacer con él aún.
-    PICKUP_PENDING,             // Orden de recogida recibida
+    PICKUP_READY,               // Listo para recogida
+    PICKED_UP,                  // Recogido
     IN_ORIGIN,                  // En almacén de origen
     IN_DESTINY,                 // En almacén de destino
     IN_DELIVERY,                // En reparto

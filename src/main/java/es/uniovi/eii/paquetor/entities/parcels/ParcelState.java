@@ -27,10 +27,13 @@ public class ParcelState {
     @Column(name = "updated_date")
     private Date updated_date;
 
+    @Column(name = "internal_index")
+    private int internal_index;
+
     public String getNiceStatus() {
         HashMap<ParcelStatus, String> statusStringHashMap = new HashMap<>();
         statusStringHashMap.put(ParcelStatus.NOT_PROCESSED, "Paquete registrado en el sistema, pendiente de procesamiento");
-        statusStringHashMap.put(ParcelStatus.PICKUP_PENDING, "Pendiente de recogida por el transportista");
+        statusStringHashMap.put(ParcelStatus.PICKUP_READY, "Pendiente de recogida por el transportista");
         statusStringHashMap.put(ParcelStatus.IN_DELIVERY, "En reparto");
         statusStringHashMap.put(ParcelStatus.IN_DESTINY, "En almacén de destino");
         statusStringHashMap.put(ParcelStatus.IN_ORIGIN, "En almacén de origen");

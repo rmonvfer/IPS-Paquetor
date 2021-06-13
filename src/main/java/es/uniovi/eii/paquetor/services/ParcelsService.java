@@ -117,7 +117,7 @@ public class ParcelsService {
             log.info("Sender has requested a REMOTE pickup");
 
             // Marcar el paquete como pendiente de recogida.
-            updateParcelStatus(parcel, ParcelStatus.PICKUP_PENDING);
+            updateParcelStatus(parcel, ParcelStatus.PICKUP_READY);
 
             // Añadir una parada de recogida en la ruta interna del almacén de referencia para el emisor
             warehousesService.addParcelToInternalRoute(parcel, RouteStopType.PICKUP);
@@ -135,8 +135,14 @@ public class ParcelsService {
     //      cambiarse a una serie concreta y limitada de estados.
     public void updateParcelStatus(Parcel parcel, ParcelStatus parcelStatus) {
         UUID newParcelStateUUID = UUID.randomUUID();
+
+        // Contar los estados almacenados hasta ahora
+        int totalSavedStates = parcel.getStatesRecord().size();
+
+        // Crear un nuevo estado para el paquete y persistirlo
         ParcelState newParcelState = new ParcelState().setId(newParcelStateUUID)
-                .setStatus(parcelStatus).setUpdated_date(new Date());
+                .setStatus(parcelStatus).setUpdated_date(new Date())
+                .setInternal_index(totalSavedStates);
         parcelStateRepository.save(newParcelState);
         parcel.getStatesRecord().add(parcelStateRepository.findById(newParcelStateUUID).get());
 
