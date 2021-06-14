@@ -1,10 +1,13 @@
 package es.uniovi.eii.paquetor.entities.locations;
 
 import es.uniovi.eii.paquetor.entities.Route;
+import es.uniovi.eii.paquetor.entities.locations.transferZone.WarehouseTransferZone;
+import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,11 +22,25 @@ import java.util.List;
 @DiscriminatorValue("warehouse_location")
 public class Warehouse extends Location {
 
-    @JoinColumn(name = "INTERNAL_ROUTE_ID")
+    public Warehouse() {
+        setExternalRoutes(new ArrayList<>());
+        setTransferZone(new WarehouseTransferZone());
+    }
+
+    @JoinColumn(name = "internal_route_id")
     @OneToOne(orphanRemoval = true)
     private Route internalRoute;
 
-    @JoinColumn(name = "EXTERNAL_WAREHOUSE_ID")
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    private List<Warehouse> externalWarehouses;
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "external_route_id")
+    private List<Route> externalRoutes;
+
+    @OneToOne(cascade = CascadeType.PERSIST, optional = false, orphanRemoval = true)
+    @JoinColumn(name = "transfer_zone_id", nullable = false)
+    private WarehouseTransferZone transferZone;
+
+    public Warehouse addExternalRoute(Route externalRoute) {
+        getExternalRoutes().add(externalRoute);
+        return this;
+    }
 }

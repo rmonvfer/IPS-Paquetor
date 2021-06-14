@@ -4,7 +4,6 @@ import es.uniovi.eii.paquetor.entities.User;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.log4j.Log4j2;
-import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -74,8 +73,8 @@ public class Parcel {
      * @return true si ambos viven en la misma ciudad, false en caso contrario
      */
     public boolean isForInternalDispatch() {
-        String senderCity = sender.getLocation().getCiudad();
-        String recipientCity = recipient.getLocation().getCiudad();
+        String senderCity = sender.getLocation().getCity().getName();
+        String recipientCity = recipient.getLocation().getCity().getName();
         return senderCity.equalsIgnoreCase(recipientCity);
     }
 }

@@ -1,10 +1,7 @@
 package es.uniovi.eii.paquetor.services;
 import es.uniovi.eii.paquetor.entities.RouteStopType;
 import es.uniovi.eii.paquetor.entities.User;
-import es.uniovi.eii.paquetor.entities.parcels.Parcel;
-import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
-import es.uniovi.eii.paquetor.entities.parcels.ParcelState;
-import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
+import es.uniovi.eii.paquetor.entities.parcels.*;
 import es.uniovi.eii.paquetor.repositories.ParcelStateRepository;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -125,6 +122,7 @@ public class ParcelsService {
             log.info("ParcelPickupOrder successfully processed!");
         }
     }
+
 
     /**
      * Actualiza el estado de un paquete (equivalente a "marcarlo")

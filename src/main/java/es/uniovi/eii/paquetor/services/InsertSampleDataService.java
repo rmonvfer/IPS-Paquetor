@@ -2,11 +2,13 @@ package es.uniovi.eii.paquetor.services;
 
 import es.uniovi.eii.paquetor.entities.Route;
 import es.uniovi.eii.paquetor.entities.User;
+import es.uniovi.eii.paquetor.entities.locations.City;
 import es.uniovi.eii.paquetor.entities.locations.Home;
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
+import es.uniovi.eii.paquetor.repositories.CitiesRepository;
 import es.uniovi.eii.paquetor.repositories.RoutesRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +32,36 @@ public class InsertSampleDataService {
     private ParcelsService parcelsService;
 
     @Autowired
+    private CitiesService citiesService;
+
+    @Autowired
     private LocationsService locationsService;
 
     @Autowired
     private RoutesRepository routesRepository;
 
+    @Autowired
+    private WarehousesService warehousesService;
+
     @PostConstruct
     public void init() {
         String password = "password";
 
+        /* Insertar ciudades */
+        City Oviedo = new City("Oviedo");
+        City Madrid = new City("Madrid");
+        City Barcelona = new City("Barcelona");
+        City Sevilla = new City("Sevilla");
+        City Bilbao = new City("Bilbao");
+        City Leon = new City("León");
+        City Salamanca = new City("Salamanca");
+        City Cadiz = new City("Cadiz");
+        citiesService.saveAll(Oviedo, Madrid, Barcelona, Sevilla, Bilbao, Leon, Salamanca, Cadiz);
+
         /* Insertar domicilios */
         log.info("Inserting homes...");
         Location ramonHome = new Home()
-                .setCiudad("Oviedo")
+                .setCity(Oviedo)
                 .setCalle("Avenida del Olmo")
                 .setCodigoPostal(33000)
                 .setNumero(13)
@@ -52,32 +71,43 @@ public class InsertSampleDataService {
         locationsService.addLocation(ramonHome); // No es de verdad `O´
 
         Location u1Home = new Home()
-                .setCiudad("Oviedo")
+                .setCity(Oviedo)
                 .setCalle("Valdés Salas")
                 .setCodigoPostal(33007)
                 .setNumero(0);
         locationsService.addLocation(u1Home);
 
         Location u2Home = new Home()
-                .setCiudad("Oviedo")
+                .setCity(Oviedo)
                 .setCalle("Valdés Salas")
                 .setCodigoPostal(33007)
                 .setNumero(5);
         locationsService.addLocation(u2Home);
 
+        Location u3Home = new Home()
+                .setCity(Madrid)
+                .setCalle("Principal")
+                .setCodigoPostal(44012)
+                .setNumero(5);
+        locationsService.addLocation(u3Home);
+
         /* Insertar almacenes */
         log.info("Inserting warehouses...");
-        Route oviedoInternalRoute = new Route();
-        routesRepository.save(oviedoInternalRoute);
-
         Location warehouseOviedo = new Warehouse()
-                .setCiudad("Oviedo")
+                .setCity(Oviedo)
                 .setCodigoPostal(33005)
                 .setCalle("Polígono de Asipo")
                 .setNumero(125);
-
-        ((Warehouse) warehouseOviedo).setInternalRoute(oviedoInternalRoute);
+        warehousesService.initWarehouseInternalRoutes((Warehouse) warehouseOviedo);
         locationsService.addLocation(warehouseOviedo);
+
+        Location warehouseMadrid = new Warehouse()
+                .setCity(Madrid)
+                .setCodigoPostal(44005)
+                .setCalle("Polígono muy lejano")
+                .setNumero(9991);
+        warehousesService.initWarehouseInternalRoutes((Warehouse) warehouseMadrid);
+        locationsService.addLocation(warehouseMadrid);
 
         /* Insertar usuarios */
         log.info("Inserting customers...");

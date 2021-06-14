@@ -22,4 +22,9 @@ public class Route {
     @JoinColumn(name = "route_id")
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private List<RouteStop> routeStops;
+
+    public Route addRouteStop(RouteStop routeStop) {
+        getRouteStops().add(routeStop);
+        return this;
+    }
 }

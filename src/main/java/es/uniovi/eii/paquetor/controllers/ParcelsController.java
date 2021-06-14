@@ -1,5 +1,6 @@
 package es.uniovi.eii.paquetor.controllers;
 
+import es.uniovi.eii.paquetor.dtos.ParcelStatusUpdateDTO;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.services.ParcelsService;
@@ -51,5 +52,12 @@ public class ParcelsController {
             }
         }
         return "parcels/parcelTrackingForm";
+    }
+
+    @PostMapping({"/parcel/update-status"})
+    public String updateStatus(@ModelAttribute("psuDTO") ParcelStatusUpdateDTO psuDTO, Model model) {
+        parcelsService.updateParcelStatus(
+                parcelsService.getParcel(UUID.fromString(psuDTO.getParcelUUID())), psuDTO.getParcelStatus());
+
     }
 }

@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,9 +35,10 @@ public class Location {
     @Column(name = "PUERTA")
     private String puerta;
 
-    @Column(name = "CIUDAD", nullable = false)
-    private String ciudad;
-
     @Column(name = "CODIGO_POSTAL", nullable = false)
     private int codigoPostal;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 }
