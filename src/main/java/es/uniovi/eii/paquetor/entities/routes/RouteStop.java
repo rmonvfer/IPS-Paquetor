@@ -25,7 +25,7 @@ public class RouteStop {
     private RouteStopType type;
 
     @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "route_stop_id", nullable = false)
+    @JoinColumn(name = "route_stop_id")
     private List<Parcel> parcels;
 
     @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)

@@ -65,7 +65,6 @@ public class InsertSampleDataService {
                 .setNumero(13)
                 .setPiso("5")
                 .setPuerta("Izq");
-
         locationsService.addLocation(ramonHome); // No es de verdad `O´
 
         Location u1Home = new Home()
@@ -97,6 +96,7 @@ public class InsertSampleDataService {
                 .setCalle("Polígono de Asipo")
                 .setNumero(125);
         warehousesService.initWarehouseInternalRoutes((Warehouse) warehouseOviedo);
+        warehousesService.initWarehouseTransferzone((Warehouse) warehouseOviedo);
         locationsService.addLocation(warehouseOviedo);
 
         Location warehouseMadrid = new Warehouse()
@@ -105,6 +105,7 @@ public class InsertSampleDataService {
                 .setCalle("Polígono muy lejano")
                 .setNumero(9991);
         warehousesService.initWarehouseInternalRoutes((Warehouse) warehouseMadrid);
+        warehousesService.initWarehouseTransferzone((Warehouse) warehouseMadrid);
         locationsService.addLocation(warehouseMadrid);
 
         /* Insertar usuarios */

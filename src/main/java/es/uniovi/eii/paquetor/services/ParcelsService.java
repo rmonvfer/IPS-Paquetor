@@ -1,7 +1,9 @@
 package es.uniovi.eii.paquetor.services;
+import es.uniovi.eii.paquetor.entities.locations.City;
 import es.uniovi.eii.paquetor.entities.routes.RouteStopType;
 import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.parcels.*;
+import es.uniovi.eii.paquetor.repositories.CitiesRepository;
 import es.uniovi.eii.paquetor.repositories.ParcelStateRepository;
 import es.uniovi.eii.paquetor.repositories.ParcelsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,9 @@ public class ParcelsService {
 
     @Autowired
     ParcelStateRepository parcelStateRepository;
+
+    @Autowired
+    CitiesRepository citiesRepository;
 
     @Autowired
     UsersService usersService;
@@ -90,6 +95,12 @@ public class ParcelsService {
      * @return ID del nuevo paquete registrado
      */
     public UUID registerNewParcel(Parcel parcel) {
+        // De la ciudad tan solo recibimos el nombre, por lo que hay que buscarla e introducirla
+        // de nuevo en la localización para evitar problemas más adelante
+        String recipientCityName = parcel.getRecipient().getLocation().getCity().getName();
+        City recipientCity = citiesRepository.findByNameIgnoreCase(recipientCityName);
+        parcel.getRecipient().getLocation().setCity(recipientCity);
+
         return registerNewParcel(
                 parcel.getSender(), parcel.getRecipient(),
                 parcel.getWeight(), parcel.getHeight(), parcel.getWidth(), parcel.getDepth());

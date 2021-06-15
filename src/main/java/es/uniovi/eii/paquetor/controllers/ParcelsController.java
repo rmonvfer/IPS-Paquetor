@@ -34,7 +34,6 @@ public class ParcelsController {
         parcel.setSender(usersService.getLoggedInUser());
         UUID new_parcel_uuid = parcelsService.registerNewParcel(parcel);
 
-        // TODO: considerar otras formas de solicitud de recogida (REMOTE, IN_PERSON...)
         parcelsService.processParcelPickupOrder(
                 parcelsService.getParcel(new_parcel_uuid), ParcelPickupOrderType.REMOTE);
 

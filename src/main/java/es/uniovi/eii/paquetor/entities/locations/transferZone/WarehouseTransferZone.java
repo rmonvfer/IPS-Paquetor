@@ -15,6 +15,14 @@ public class WarehouseTransferZone {
         setWarehouseTransferzoneSections(new ArrayList<>());
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "warehouse_transfer_zone_id")
+    private List<WarehouseTransferzoneSection> warehouseTransferzoneSections;
+
     /**
      * Busca una sección dentro de una zona de transferencia identificada
      * por la ciudad a la que hace referencia
@@ -29,12 +37,4 @@ public class WarehouseTransferZone {
         }
         return null;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "warehouse_transfer_zone_id")
-    private List<WarehouseTransferzoneSection> warehouseTransferzoneSections;
 }

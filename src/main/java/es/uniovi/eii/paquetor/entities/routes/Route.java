@@ -5,14 +5,15 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data @Accessors(chain = true)
 public class Route {
 
     public Route() {
-        setRouteStops(new ArrayList<>());
+        setRouteStops(new HashSet<>());
         setRouteType(RouteType.INTERNAL);
     }
 
@@ -22,7 +23,7 @@ public class Route {
 
     @JoinColumn(name = "route_id")
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
-    private List<RouteStop> routeStops;
+    private Set<RouteStop> routeStops;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "route_type", nullable = false)

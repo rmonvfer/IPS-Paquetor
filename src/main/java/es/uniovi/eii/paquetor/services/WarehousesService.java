@@ -1,5 +1,6 @@
 package es.uniovi.eii.paquetor.services;
 
+import es.uniovi.eii.paquetor.entities.locations.transferZone.WarehouseTransferZone;
 import es.uniovi.eii.paquetor.entities.routes.Route;
 import es.uniovi.eii.paquetor.entities.routes.RouteStop;
 import es.uniovi.eii.paquetor.entities.routes.RouteStopType;
@@ -138,8 +139,19 @@ public class WarehousesService {
         warehouse.setInternalRoute(warehouseInternalRoute);
     }
 
+    /**
+     * Inicializa la zona de transferencia del almacén
+     * @param warehouse almacén a inicializar
+     */
+    public void initWarehouseTransferzone(Warehouse warehouse) {
+        // Crear una zona de transferencia
+        WarehouseTransferZone warehouseTransferZone = new WarehouseTransferZone();
+        warehouseTransferZoneRepository.save(warehouseTransferZone);
+        warehouse.setTransferZone(warehouseTransferZone);
+    }
+
     public Warehouse findByCityName(String cityName) {
-        return (Warehouse) locationsRepository.findByCity_NameEqualsIgnoreCase(cityName).get();
+        return (Warehouse) locationsRepository.findByCity_NameEqualsIgnoreCase(cityName);
     }
 
     public Warehouse findParcelSenderReferenceWarehouse(Parcel parcel) {

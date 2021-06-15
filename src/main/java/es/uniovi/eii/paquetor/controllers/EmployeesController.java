@@ -1,7 +1,9 @@
 package es.uniovi.eii.paquetor.controllers;
 
 import es.uniovi.eii.paquetor.dtos.ParcelStatusUpdateDTO;
+import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.services.ParcelsService;
+import es.uniovi.eii.paquetor.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,17 +20,18 @@ public class EmployeesController {
     @Autowired
     ParcelsService parcelsService;
 
+    @Autowired
+    UsersService usersService;
+
 
 
     @GetMapping({"/employee/home"})
     public String employeeHome(Model model) {
         // Muestra la ruta asignada al empleado y sus detalles
+
+        return "employees/home";
     }
 
-    @GetMapping({"/employee/route/start/{id}"})
-    public String employeeHome(@PathVariable Long id, Model model) {
-        // Muestra la ruta asignada al empleado y sus detalles
-    }
 
     @PostMapping({"/employee/parcel/update-status"})
     public String updateStatus(@ModelAttribute("psuDTO") ParcelStatusUpdateDTO psuDTO, Model model) {

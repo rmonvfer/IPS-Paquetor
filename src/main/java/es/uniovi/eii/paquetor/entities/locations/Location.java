@@ -19,6 +19,10 @@ import java.util.UUID;
 @DiscriminatorColumn(name = "location_type")
 public class Location {
 
+    public Location() {
+        setCity(new City());
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -38,7 +42,7 @@ public class Location {
     @Column(name = "CODIGO_POSTAL", nullable = false)
     private int codigoPostal;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 }

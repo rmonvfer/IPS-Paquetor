@@ -1,10 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
 <body>
-
+<nav class="is-primary" th:insert="fragments/nav"></nav>
+<section class="section">
+  <div class="container">
+    <h1 class="title">Ruta</h1>
+    <div class="columns">
+      <div class="column box">
+        <div class="columns">
+          <div class="column">
+            <h4 class="is-size-4 is-bold">Origen</h4>
+            <p>Almacén #1023</p>
+            <p>Calle Domingo Fernández 51, Oviedo</p>
+          </div>
+          <div class="column">
+            <h4 class="is-size-4 is-bold">Ruta</h4>
+            <p>53 Paradas</p>
+            <p>18 Recogidas</p>
+            <p>34 Entregas</p>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-centered">
+            <a class="button" href="/employee/route/start">Comenzar ruta</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 </body>
 </html>

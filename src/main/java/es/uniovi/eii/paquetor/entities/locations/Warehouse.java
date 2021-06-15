@@ -34,8 +34,8 @@ public class Warehouse extends Location {
     @JoinColumn(name = "external_route_id")
     private List<Route> externalRoutes;
 
-    @OneToOne(cascade = CascadeType.PERSIST, optional = false, orphanRemoval = true)
-    @JoinColumn(name = "transfer_zone_id", nullable = false)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "transfer_zone_id")
     private WarehouseTransferZone transferZone;
 
     public Warehouse addExternalRoute(Route externalRoute) {
