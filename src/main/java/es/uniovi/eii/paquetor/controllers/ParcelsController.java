@@ -53,11 +53,4 @@ public class ParcelsController {
         }
         return "parcels/parcelTrackingForm";
     }
-
-    @PostMapping({"/parcel/update-status"})
-    public String updateStatus(@ModelAttribute("psuDTO") ParcelStatusUpdateDTO psuDTO, Model model) {
-        parcelsService.updateParcelStatus(
-                parcelsService.getParcel(UUID.fromString(psuDTO.getParcelUUID())), psuDTO.getParcelStatus());
-
-    }
 }

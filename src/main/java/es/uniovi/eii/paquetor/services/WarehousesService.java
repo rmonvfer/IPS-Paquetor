@@ -1,8 +1,8 @@
 package es.uniovi.eii.paquetor.services;
 
-import es.uniovi.eii.paquetor.entities.Route;
-import es.uniovi.eii.paquetor.entities.RouteStop;
-import es.uniovi.eii.paquetor.entities.RouteStopType;
+import es.uniovi.eii.paquetor.entities.routes.Route;
+import es.uniovi.eii.paquetor.entities.routes.RouteStop;
+import es.uniovi.eii.paquetor.entities.routes.RouteStopType;
 import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.locations.City;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;

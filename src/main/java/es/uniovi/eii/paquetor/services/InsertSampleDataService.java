@@ -1,6 +1,5 @@
 package es.uniovi.eii.paquetor.services;
 
-import es.uniovi.eii.paquetor.entities.Route;
 import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.locations.City;
 import es.uniovi.eii.paquetor.entities.locations.Home;
@@ -8,7 +7,6 @@ import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
-import es.uniovi.eii.paquetor.repositories.CitiesRepository;
 import es.uniovi.eii.paquetor.repositories.RoutesRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package es.uniovi.eii.paquetor.entities;
+package es.uniovi.eii.paquetor.entities.routes;
 
 public enum RouteStopType {
     DELIVERY,             // Entrega

@@ -1,5 +1,5 @@
 package es.uniovi.eii.paquetor.services;
-import es.uniovi.eii.paquetor.entities.RouteStopType;
+import es.uniovi.eii.paquetor.entities.routes.RouteStopType;
 import es.uniovi.eii.paquetor.entities.User;
 import es.uniovi.eii.paquetor.entities.parcels.*;
 import es.uniovi.eii.paquetor.repositories.ParcelStateRepository;

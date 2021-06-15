@@ -1,8 +1,7 @@
 package es.uniovi.eii.paquetor.entities.locations;
 
-import es.uniovi.eii.paquetor.entities.Route;
+import es.uniovi.eii.paquetor.entities.routes.Route;
 import es.uniovi.eii.paquetor.entities.locations.transferZone.WarehouseTransferZone;
-import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

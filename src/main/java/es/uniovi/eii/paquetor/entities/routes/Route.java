@@ -1,4 +1,4 @@
-package es.uniovi.eii.paquetor.entities;
+package es.uniovi.eii.paquetor.entities.routes;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -12,7 +12,8 @@ import java.util.List;
 public class Route {
 
     public Route() {
-        this.routeStops = new ArrayList<>();
+        setRouteStops(new ArrayList<>());
+        setRouteType(RouteType.INTERNAL);
     }
 
     @Id
@@ -22,6 +23,10 @@ public class Route {
     @JoinColumn(name = "route_id")
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private List<RouteStop> routeStops;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "route_type", nullable = false)
+    private RouteType routeType;
 
     public Route addRouteStop(RouteStop routeStop) {
         getRouteStops().add(routeStop);

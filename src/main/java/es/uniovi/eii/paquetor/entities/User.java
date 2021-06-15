@@ -1,5 +1,6 @@
 package es.uniovi.eii.paquetor.entities;
 import es.uniovi.eii.paquetor.entities.locations.Location;
+import es.uniovi.eii.paquetor.entities.routes.Route;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
@@ -51,4 +52,8 @@ public class User {
 
     @Column(name = "is_disabled", nullable = false)
     private boolean isDisabled = false;
+
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @JoinColumn(name = "route_id")
+    private Route route;
 }

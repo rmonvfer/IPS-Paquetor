@@ -41,11 +41,11 @@ public class UsersService {
     }
 
     /**
-     * Obtiene un cliente por su id
-     * @param id UUID del cliente
-     * @return cliente si se encuentra, null en caso contrario.
+     * Obtiene un usuario por su ID
+     * @param id UUID del usuario
+     * @return usuario si se encuentra, null en caso contrario.
      */
-    public User getCustomer(UUID id) {
+    public User getUser(UUID id) {
         return usersRepository.findById(id).get();
     }
 

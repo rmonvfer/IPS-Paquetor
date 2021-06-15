@@ -1,4 +1,4 @@
-package es.uniovi.eii.paquetor.entities;
+package es.uniovi.eii.paquetor.entities.routes;
 
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
