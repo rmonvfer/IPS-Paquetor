@@ -28,6 +28,7 @@ public class EmployeesController {
     public String employeeHome(Model model) {
         User loggedInEmployee = usersService.getLoggedInUser();
         model.addAttribute("route", loggedInEmployee.getRoute());
+        model.addAttribute("employee", loggedInEmployee);
         return "employees/home";
     }
 

@@ -46,6 +46,7 @@ public class Warehouse extends Location {
     @JoinColumn(name = "warehouse_id")
     private Set<User> employees;
 
+
     public Warehouse addExternalRoute(Route externalRoute) {
         getExternalRoutes().add(externalRoute);
         return this;

@@ -28,7 +28,7 @@ public class RouteStop {
     @JoinColumn(name = "route_stop_id")
     private List<Parcel> parcels;
 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinColumn(name = "location_id")
     private Location location;
 

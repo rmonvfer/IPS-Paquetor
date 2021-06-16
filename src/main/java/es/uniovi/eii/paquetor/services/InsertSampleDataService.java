@@ -7,6 +7,7 @@ import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
+import es.uniovi.eii.paquetor.entities.routes.Route;
 import es.uniovi.eii.paquetor.repositories.RoutesRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,6 +135,14 @@ public class InsertSampleDataService {
                 .setLocation(u2Home);
         usersService.addCustomer(user2);
 
+        User user3 = new User("cu3@email.com");
+        user3.setName("Customer 3")
+                .setLastName("Third")
+                .setDNI("12345670C")
+                .setPasswordConfirm(password)
+                .setLocation(u3Home);
+        usersService.addCustomer(user3);
+
         /* Insertar empleados */
         log.info("Inserting employees...");
         User emp1 = new User("emp1@email.com");
@@ -176,38 +185,47 @@ public class InsertSampleDataService {
                 .setLocation(warehouseOviedo);
         employeesService.addEmployee(emp5);
 
-        log.info("Inserting parcels...");
+        log.info("Linking employees with routes...");
+        /* Asociar empleados con las diferentes rutas */
 
+        // Almacén Oviedo -> Ruta interna (emp1)
+        log.info("[INTERNAL] Oviedo -> Oviedo (Employee1)");
+        employeesService.assignInternalRouteToEmployee(emp1);
+
+        // Oviedo -> Madrid
+        log.info("[EXTERNAL] Oviedo -> Madrid (Employee2)");
+        employeesService.assignExternalRouteToEmployee(Madrid, emp2);
+
+        log.info("Inserting parcels...");
         /* Insertar paquetes */
         // User1 -> User2 con recogida a domicilio (REMOTE)
         UUID u1_to_u2_uuid = parcelsService.registerNewParcel(
                 user1, user2, 12.0, 120.0, 190.0, 140.0);
+
+        // Marcar para recogida
         parcelsService.processParcelPickupOrder(
                 parcelsService.getParcel(u1_to_u2_uuid), ParcelPickupOrderType.REMOTE);
 
-        log.info("Emulating state change for Parcel " + parcelsService.getParcel(u1_to_u2_uuid));
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_PICKUP);
-        wait(5);
+        // Tras la recogida, el transportista carga el paquete en la furgoneta
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.PICKED_UP);
 
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_ORIGIN);
-        wait(5);
+        // Al llegar al almacén comprueba el destino del paquete
+        warehousesService.processParcelReception(parcelsService.getParcel(u1_to_u2_uuid));
 
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_DESTINY);
-        wait(5);
+        // User 2 -> User 3 (Externo) con recogida a domicilio
+        UUID u2_to_u3_uuid = parcelsService.registerNewParcel(
+                user3, user3, 12.0, 120.0, 190.0, 140.0);
 
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.IN_DELIVERY);
-        wait(5);
-
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.DELIVERED);
-        wait(6);
-
-        log.info("Status change result: " + parcelsService.getParcel(u1_to_u2_uuid));
-
-        // User2 -> User1 con recogida a domicilio (REMOTE)
-        UUID u2_to_u1_uuid = parcelsService.registerNewParcel(
-                user2, user1, 12.0, 120.0, 190.0, 140.0);
         parcelsService.processParcelPickupOrder(
-                parcelsService.getParcel(u2_to_u1_uuid), ParcelPickupOrderType.REMOTE);
+                parcelsService.getParcel(u2_to_u3_uuid), ParcelPickupOrderType.REMOTE);
+
+        // Tras la recogida, el transportista carga el paquete en la furgoneta
+        parcelsService.updateParcelStatus(parcelsService.getParcel(u2_to_u3_uuid), ParcelStatus.PICKED_UP);
+
+        // Al llegar al almacén comprueba el destino del paquete
+        warehousesService.processParcelReception(parcelsService.getParcel(u2_to_u3_uuid));
+
+        warehousesService.processTransferzone((Warehouse) warehouseOviedo);
 
         log.info("Sample data successfully inserted");
     }

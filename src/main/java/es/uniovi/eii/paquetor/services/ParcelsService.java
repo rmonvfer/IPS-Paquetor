@@ -117,7 +117,6 @@ public class ParcelsService {
      * @param pickupOrderType tipo de orden de recogida.
      */
     public void processParcelPickupOrder(Parcel parcel, ParcelPickupOrderType pickupOrderType) {
-
         log.info("Received a ParcelPickupOrder for Parcel " + parcel);
 
         // Si el cliente ha solicitado una recogida
@@ -133,7 +132,6 @@ public class ParcelsService {
             log.info("ParcelPickupOrder successfully processed!");
         }
     }
-
 
     /**
      * Actualiza el estado de un paquete (equivalente a "marcarlo")
