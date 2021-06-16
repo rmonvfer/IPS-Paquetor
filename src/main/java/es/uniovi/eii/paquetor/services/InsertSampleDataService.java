@@ -36,7 +36,7 @@ public class InsertSampleDataService {
     private LocationsService locationsService;
 
     @Autowired
-    private RoutesRepository routesRepository;
+    private EmployeesService employeesService;
 
     @Autowired
     private WarehousesService warehousesService;
@@ -133,6 +133,48 @@ public class InsertSampleDataService {
                 .setPasswordConfirm(password)
                 .setLocation(u2Home);
         usersService.addCustomer(user2);
+
+        /* Insertar empleados */
+        log.info("Inserting employees...");
+        User emp1 = new User("emp1@email.com");
+        emp1.setName("Employee 1")
+                .setLastName("First")
+                .setDNI("18754981H")
+                .setPasswordConfirm(password)
+                .setLocation(warehouseOviedo);
+        employeesService.addEmployee(emp1);
+
+        User emp2 = new User("emp2@email.com");
+        emp2.setName("Employee 2")
+                .setLastName("Second")
+                .setDNI("18754981H")
+                .setPasswordConfirm(password)
+                .setLocation(warehouseOviedo);
+        employeesService.addEmployee(emp2);
+
+        User emp3 = new User("emp3@email.com");
+        emp3.setName("Employee 3")
+                .setLastName("Third")
+                .setDNI("18754981H")
+                .setPasswordConfirm(password)
+                .setLocation(warehouseOviedo);
+        employeesService.addEmployee(emp3);
+
+        User emp4 = new User("emp4@email.com");
+        emp4.setName("Employee 4")
+                .setLastName("Fourth")
+                .setDNI("18754981H")
+                .setPasswordConfirm(password)
+                .setLocation(warehouseOviedo);
+        employeesService.addEmployee(emp4);
+
+        User emp5 = new User("emp5@email.com");
+        emp5.setName("Employee 5")
+                .setLastName("Fifth")
+                .setDNI("18754981H")
+                .setPasswordConfirm(password)
+                .setLocation(warehouseOviedo);
+        employeesService.addEmployee(emp5);
 
         log.info("Inserting parcels...");
 

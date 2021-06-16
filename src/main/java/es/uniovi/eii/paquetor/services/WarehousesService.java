@@ -65,7 +65,7 @@ public class WarehousesService {
      * @param targetWarehouse Almacén de destino
      * @param parcels Paquetes a entregar en el almacén de destino {}
      */
-    public void addRouteToExternalWarehouse (
+    public void addWarehouseExternalRoute (
             Warehouse originWarehouse, Warehouse targetWarehouse, List<Parcel> parcels) {
         log.info("Attempting to add a new external route from " + originWarehouse + " to " + targetWarehouse);
 
@@ -109,8 +109,7 @@ public class WarehousesService {
         } else {
             // Si no hay una sección en la zona de transferencia para esa ciudad de destino entonces crear una
             // y almacenar el paquete en ella.
-            WarehouseTransferzoneSection tempTransferzoneSection = new WarehouseTransferzoneSection(targetCity, parcel);
-            warehouse.getTransferZone().getWarehouseTransferzoneSections().add(tempTransferzoneSection);
+            addTransferzoneSection(warehouse, targetCity, parcel);
         }
         parcelsService.updateParcelStatus(parcel, ParcelStatus.IN_TRANSFER_ZONE);
         locationsRepository.save(warehouse);
@@ -124,6 +123,11 @@ public class WarehousesService {
      * @param parcels Paquetes a enviar la ciudad destino (valores)
      */
     public void addTransferzoneSection(Warehouse warehouse, City city, List<Parcel> parcels) {
+        warehouse.getTransferZone()
+                .getWarehouseTransferzoneSections().add(new WarehouseTransferzoneSection(city, parcels));
+    }
+
+    public void addTransferzoneSection(Warehouse warehouse, City city, Parcel... parcels) {
         warehouse.getTransferZone()
                 .getWarehouseTransferzoneSections().add(new WarehouseTransferzoneSection(city, parcels));
     }
@@ -150,8 +154,18 @@ public class WarehousesService {
         warehouse.setTransferZone(warehouseTransferZone);
     }
 
+    /**
+     * Asocia un empleado con un almacén concreto
+     * @param warehouse Almacén que recibe al empleado
+     * @param employee Empleado a agregar
+     */
+    public void addEmployeeToWarehouse(Warehouse warehouse, User employee) {
+        warehouse.getEmployees().add(employee);
+        locationsRepository.save(warehouse);
+    }
+
     public Warehouse findByCityName(String cityName) {
-        return (Warehouse) locationsRepository.findByCity_NameEqualsIgnoreCase(cityName);
+        return locationsRepository.findByCity_NameEqualsIgnoreCase(cityName);
     }
 
     public Warehouse findParcelSenderReferenceWarehouse(Parcel parcel) {

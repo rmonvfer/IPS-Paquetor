@@ -53,9 +53,14 @@ public class UsersController {
 
     @GetMapping("/home")
     public String userHome(Model model) {
-        User currentCustomer = usersService.getLoggedInUser();
-        model.addAttribute("sentParcels", parcelsService.getCustomerSentParcels(currentCustomer));
-        model.addAttribute("receivedParcels", parcelsService.getCustomerReceivedParcels(currentCustomer));
-        return "home";
+        User currentUser = usersService.getLoggedInUser();
+        if (currentUser.getRole().equals(rolesService.getRoles()[0])) { // Customer
+            model.addAttribute("sentParcels", parcelsService.getCustomerSentParcels(currentUser));
+            model.addAttribute("receivedParcels", parcelsService.getCustomerReceivedParcels(currentUser));
+            return "home";
+
+        } else {
+            return "redirect:/employee/home";
+        }
     }
 }
