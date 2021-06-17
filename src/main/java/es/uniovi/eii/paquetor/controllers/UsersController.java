@@ -1,6 +1,10 @@
 package es.uniovi.eii.paquetor.controllers;
 
 import es.uniovi.eii.paquetor.entities.User;
+import es.uniovi.eii.paquetor.entities.locations.City;
+import es.uniovi.eii.paquetor.entities.locations.Location;
+import es.uniovi.eii.paquetor.repositories.CitiesRepository;
+import es.uniovi.eii.paquetor.repositories.LocationsRepository;
 import es.uniovi.eii.paquetor.services.ParcelsService;
 import es.uniovi.eii.paquetor.services.RolesService;
 import es.uniovi.eii.paquetor.services.SecurityService;
@@ -27,6 +31,12 @@ public class UsersController {
     @Autowired
     ParcelsService parcelsService;
 
+    @Autowired
+    LocationsRepository locationsRepository;
+
+    @Autowired
+    CitiesRepository citiesRepository;
+
     @GetMapping("/")
     public String viewHomePage() {
         return "index";
@@ -46,6 +56,15 @@ public class UsersController {
     @PostMapping(value = "/register")
     public String signup(@ModelAttribute("user") User user, Model model) {
         user.setRole(rolesService.getRoles()[0]);
+        Location userLocation = user.getLocation();
+        City userCity = userLocation.getCity();
+
+        try {
+            citiesRepository.save(userCity);
+        } catch (Exception exc) {}
+
+        locationsRepository.save(userLocation.setCity(userCity));
+        user.setLocation(userLocation);
         usersService.addCustomer(user);
         securityService.autoLogin(user.getEmail(), user.getPasswordConfirm());
         return "redirect:home";

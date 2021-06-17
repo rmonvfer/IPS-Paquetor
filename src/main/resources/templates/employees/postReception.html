@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body class="has-background-info">
+
+<nav class="is-primary" th:insert="fragments/nav"></nav>
+
+<main class="hero is-info is-fullheight-with-navbar">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="is-size-2 has-text-weight-bold">¡Paquetes procesados!</h2>
+      <p class="subtitle has-text-weight-bold">
+        Detalles
+      </p>
+      <div class="columns is-centered mt-2">
+        <div class="column is-three-quarters-desktop">
+          <div class="columns my-3 mx-2">
+            <div class="column box">
+              <h1 class="is-size-1 has-text-weight-bold" th:text="${internalDispatch}"></h1>
+              <h5 class="is-size-5 is-bold">paquetes añadidos a la ruta interna</h5>
+            </div>
+            <div class="column box">
+              <h1 class="is-size-1 has-text-weight-bold" th:text="${externalDispatch}"></h1>
+              <h5 class="is-size-5 is-bold">paquetes añadidos a rutas externas</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

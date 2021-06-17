@@ -5,10 +5,9 @@ import es.uniovi.eii.paquetor.entities.locations.City;
 import es.uniovi.eii.paquetor.entities.locations.Home;
 import es.uniovi.eii.paquetor.entities.locations.Location;
 import es.uniovi.eii.paquetor.entities.locations.Warehouse;
+import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelPickupOrderType;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
-import es.uniovi.eii.paquetor.entities.routes.Route;
-import es.uniovi.eii.paquetor.repositories.RoutesRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -59,20 +58,12 @@ public class InsertSampleDataService {
 
         /* Insertar domicilios */
         log.info("Inserting homes...");
-        Location ramonHome = new Home()
-                .setCity(Oviedo)
-                .setCalle("Avenida del Olmo")
-                .setCodigoPostal(33000)
-                .setNumero(13)
-                .setPiso("5")
-                .setPuerta("Izq");
-        locationsService.addLocation(ramonHome); // No es de verdad `O´
 
         Location u1Home = new Home()
                 .setCity(Oviedo)
                 .setCalle("Valdés Salas")
                 .setCodigoPostal(33007)
-                .setNumero(0);
+                .setNumero(7);
         locationsService.addLocation(u1Home);
 
         Location u2Home = new Home()
@@ -96,48 +87,37 @@ public class InsertSampleDataService {
                 .setCodigoPostal(33005)
                 .setCalle("Polígono de Asipo")
                 .setNumero(125);
-        warehousesService.initWarehouseInternalRoutes((Warehouse) warehouseOviedo);
-        warehousesService.initWarehouseTransferzone((Warehouse) warehouseOviedo);
-        locationsService.addLocation(warehouseOviedo);
+        warehousesService.initWarehouse((Warehouse) warehouseOviedo);
 
         Location warehouseMadrid = new Warehouse()
                 .setCity(Madrid)
                 .setCodigoPostal(44005)
                 .setCalle("Polígono muy lejano")
                 .setNumero(9991);
-        warehousesService.initWarehouseInternalRoutes((Warehouse) warehouseMadrid);
-        warehousesService.initWarehouseTransferzone((Warehouse) warehouseMadrid);
-        locationsService.addLocation(warehouseMadrid);
+        warehousesService.initWarehouse((Warehouse) warehouseMadrid);
 
         /* Insertar usuarios */
         log.info("Inserting customers...");
-        User ramon = new User("ramonvilafer@gmail.com");
-        ramon.setName("ramon")
-                .setLastName("vila")
-                .setDNI("71881410H") // Tampoco es de verdad
-                .setPasswordConfirm(password)
-                .setLocation(ramonHome);
-        usersService.addCustomer(ramon);
 
         User user1 = new User("cu1@email.com");
-        user1.setName("Customer 1")
-                .setLastName("First")
+        user1.setName("Jose")
+                .setLastName("Fernández")
                 .setDNI("12345678B")
                 .setPasswordConfirm(password)
                 .setLocation(u1Home);
         usersService.addCustomer(user1);
 
         User user2 = new User("cu2@email.com");
-        user2.setName("Customer 2")
-                .setLastName("Second")
+        user2.setName("María")
+                .setLastName("González Suarez")
                 .setDNI("12345678C")
                 .setPasswordConfirm(password)
                 .setLocation(u2Home);
         usersService.addCustomer(user2);
 
         User user3 = new User("cu3@email.com");
-        user3.setName("Customer 3")
-                .setLastName("Third")
+        user3.setName("Francisco")
+                .setLastName("Galvez")
                 .setDNI("12345670C")
                 .setPasswordConfirm(password)
                 .setLocation(u3Home);
@@ -146,8 +126,8 @@ public class InsertSampleDataService {
         /* Insertar empleados */
         log.info("Inserting employees...");
         User emp1 = new User("emp1@email.com");
-        emp1.setName("Employee 1")
-                .setLastName("First")
+        emp1.setName("Andrea")
+                .setLastName("González")
                 .setDNI("18754981H")
                 .setPasswordConfirm(password)
                 .setLocation(warehouseOviedo);
@@ -161,29 +141,37 @@ public class InsertSampleDataService {
                 .setLocation(warehouseOviedo);
         employeesService.addEmployee(emp2);
 
-        User emp3 = new User("emp3@email.com");
-        emp3.setName("Employee 3")
-                .setLastName("Third")
-                .setDNI("18754981H")
-                .setPasswordConfirm(password)
-                .setLocation(warehouseOviedo);
-        employeesService.addEmployee(emp3);
+        log.info("Inserting parcels...");
 
-        User emp4 = new User("emp4@email.com");
-        emp4.setName("Employee 4")
-                .setLastName("Fourth")
-                .setDNI("18754981H")
-                .setPasswordConfirm(password)
-                .setLocation(warehouseOviedo);
-        employeesService.addEmployee(emp4);
+        // User1 -> User2 INTERNO
+        Parcel parcel_1  = parcelsService.registerNewParcel(user1, user2, 12.0, 120.0, 190.0, 140.0);
+        Parcel parcel_2  = parcelsService.registerNewParcel(user2, user1, 12.0, 120.0, 190.0, 140.0);
+        Parcel parcel_3  = parcelsService.registerNewParcel(user1, user2, 19.0, 120.0, 190.0, 140.0);
 
-        User emp5 = new User("emp5@email.com");
-        emp5.setName("Employee 5")
-                .setLastName("Fifth")
-                .setDNI("18754981H")
-                .setPasswordConfirm(password)
-                .setLocation(warehouseOviedo);
-        employeesService.addEmployee(emp5);
+        // Marcar para recogida
+        parcelsService.processParcelPickupOrder(parcel_1, ParcelPickupOrderType.REMOTE);
+        parcelsService.processParcelPickupOrder(parcel_2, ParcelPickupOrderType.REMOTE);
+        parcelsService.processParcelPickupOrder(parcel_3, ParcelPickupOrderType.REMOTE);
+
+
+        // Al llegar al almacén comprueba el destino del paquete
+        // warehousesService.processParcelReception(parcel_1);
+
+        /*
+        // User 2 -> User 3 (Externo) con recogida a domicilio
+        Parcel parcel_2 = parcelsService.registerNewParcel(user2, user3, 12.0, 120.0, 190.0, 140.0);
+
+        parcelsService.processParcelPickupOrder(parcel_2, ParcelPickupOrderType.REMOTE);
+
+        // Tras la recogida, el transportista carga el paquete en la furgoneta
+        parcelsService.updateParcelStatus(parcel_2, ParcelStatus.PICKED_UP);
+
+        // Al llegar al almacén comprueba el destino del paquete
+        warehousesService.processParcelReception(parcel_2);
+
+        warehousesService.processTransferzone(
+                warehousesService.findParcelSenderReferenceWarehouse(parcel_2));
+         */
 
         log.info("Linking employees with routes...");
         /* Asociar empleados con las diferentes rutas */
@@ -191,41 +179,14 @@ public class InsertSampleDataService {
         // Almacén Oviedo -> Ruta interna (emp1)
         log.info("[INTERNAL] Oviedo -> Oviedo (Employee1)");
         employeesService.assignInternalRouteToEmployee(emp1);
+        log.info("Resulting employee " + emp1);
 
+        /*
         // Oviedo -> Madrid
         log.info("[EXTERNAL] Oviedo -> Madrid (Employee2)");
-        employeesService.assignExternalRouteToEmployee(Madrid, emp2);
-
-        log.info("Inserting parcels...");
-        /* Insertar paquetes */
-        // User1 -> User2 con recogida a domicilio (REMOTE)
-        UUID u1_to_u2_uuid = parcelsService.registerNewParcel(
-                user1, user2, 12.0, 120.0, 190.0, 140.0);
-
-        // Marcar para recogida
-        parcelsService.processParcelPickupOrder(
-                parcelsService.getParcel(u1_to_u2_uuid), ParcelPickupOrderType.REMOTE);
-
-        // Tras la recogida, el transportista carga el paquete en la furgoneta
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u1_to_u2_uuid), ParcelStatus.PICKED_UP);
-
-        // Al llegar al almacén comprueba el destino del paquete
-        warehousesService.processParcelReception(parcelsService.getParcel(u1_to_u2_uuid));
-
-        // User 2 -> User 3 (Externo) con recogida a domicilio
-        UUID u2_to_u3_uuid = parcelsService.registerNewParcel(
-                user3, user3, 12.0, 120.0, 190.0, 140.0);
-
-        parcelsService.processParcelPickupOrder(
-                parcelsService.getParcel(u2_to_u3_uuid), ParcelPickupOrderType.REMOTE);
-
-        // Tras la recogida, el transportista carga el paquete en la furgoneta
-        parcelsService.updateParcelStatus(parcelsService.getParcel(u2_to_u3_uuid), ParcelStatus.PICKED_UP);
-
-        // Al llegar al almacén comprueba el destino del paquete
-        warehousesService.processParcelReception(parcelsService.getParcel(u2_to_u3_uuid));
-
-        warehousesService.processTransferzone((Warehouse) warehouseOviedo);
+        employeesService.assignEmployeeExternalRouteToCity(Madrid, emp2);
+        log.info("Resulting employee " + emp2);
+        */
 
         log.info("Sample data successfully inserted");
     }

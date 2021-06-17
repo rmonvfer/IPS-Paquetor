@@ -38,7 +38,12 @@ public class EmployeesService {
      * @param employee empleado encargado de recorrer la ruta
      */
     public void assignInternalRouteToEmployee(User employee) {
-        employee.setRoute(getEmployeeWarehouse(employee).getInternalRoute());
+
+        log.info("Assigning internal route to employee");
+        Warehouse employeeWarehouse = getEmployeeWarehouse(employee);
+        log.info("Got employeeWarehouse " + employeeWarehouse);
+
+        employee.setRoute(employeeWarehouse.getInternalRoute());
         usersRepository.save(employee);
     }
 
@@ -48,15 +53,15 @@ public class EmployeesService {
      * @param targetCity Ciudad de destino de la ruta externa.
      * @param employee Empleado encargado de la ruta.
      */
-    public void assignExternalRouteToEmployee(City targetCity, User employee) {
+    public void assignEmployeeExternalRouteToCity(City targetCity, User employee) {
         log.info("Assigning external route to employee " + employee);
-
         Warehouse employeeWarehouse = getEmployeeWarehouse(employee);
 
         log.info("Found employee warehouse " + employeeWarehouse);
 
         Route externalRoute = warehousesService.getExternalRouteToCity(employeeWarehouse, targetCity);
         if (externalRoute == null) {
+            log.warn("ExternalRoute is null from " + employeeWarehouse + " to " + targetCity );
             externalRoute = routesService.createExternalRoute(targetCity);
         }
         employee.setRoute(externalRoute);

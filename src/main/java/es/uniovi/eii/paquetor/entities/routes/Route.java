@@ -22,7 +22,7 @@ public class Route {
     private Long id;
 
     @JoinColumn(name = "route_id")
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     private Set<RouteStop> routeStops;
 
     @Enumerated(EnumType.STRING)

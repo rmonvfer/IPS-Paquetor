@@ -6,22 +6,23 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity @Data @Accessors(chain = true)
 public class WarehouseTransferZone {
 
     public WarehouseTransferZone() {
-        setWarehouseTransferzoneSections(new ArrayList<>());
+        setWarehouseTransferzoneSections(new HashSet<>());
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "warehouse_transfer_zone_id")
-    private List<WarehouseTransferzoneSection> warehouseTransferzoneSections;
+    private Set<WarehouseTransferzoneSection> warehouseTransferzoneSections;
 
     /**
      * Busca una sección dentro de una zona de transferencia identificada

@@ -11,15 +11,13 @@ import es.uniovi.eii.paquetor.entities.locations.transferZone.WarehouseTransferz
 import es.uniovi.eii.paquetor.entities.parcels.Parcel;
 import es.uniovi.eii.paquetor.entities.parcels.ParcelStatus;
 import es.uniovi.eii.paquetor.entities.routes.RouteType;
-import es.uniovi.eii.paquetor.repositories.LocationsRepository;
-import es.uniovi.eii.paquetor.repositories.RoutesRepository;
-import es.uniovi.eii.paquetor.repositories.WarehouseTransferZoneRepository;
-import es.uniovi.eii.paquetor.repositories.WarehouseTransferzoneSectionRepository;
+import es.uniovi.eii.paquetor.repositories.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service @Log4j2
 public class WarehousesService {
@@ -35,6 +33,12 @@ public class WarehousesService {
 
     @Autowired
     RoutesRepository routesRepository;
+
+    @Autowired
+    CitiesRepository citiesRepository;
+
+    @Autowired
+    RouteStopRepository routeStopRepository;
 
     @Autowired
     WarehouseTransferZoneRepository warehouseTransferZoneRepository;
@@ -56,8 +60,12 @@ public class WarehousesService {
 
         // Crear una parada de ruta e introducir el paquete y el tipo de parada
         RouteStop customerRouteStop = new RouteStop().setType(stopType).addParcel(parcel);
+        routeStopRepository.save(customerRouteStop);
+
         senderReferenceWarehouse.getInternalRoute().getRouteStops().add(customerRouteStop);
         log.info("A RouteStop has been added to the previously found reference warehouse");
+
+        routesRepository.save(senderReferenceWarehouse.getInternalRoute());
 
         locationsRepository.save(senderReferenceWarehouse);
         log.info("Parcel added to internal route successfully!");
@@ -70,18 +78,20 @@ public class WarehousesService {
      */
     public void processTransferzone(Warehouse warehouse) {
         log.info("Processing transferzone from warehouse " + warehouse);
-
         WarehouseTransferZone transferZone = warehouse.getTransferZone();
-        List<WarehouseTransferzoneSection> transferzoneSections
-                = transferZone.getWarehouseTransferzoneSections();
 
-        // Recorrer los paquetes de la zona de transferencia y asignarlos a la
-        // ruta externa correspondiente
+        log.info("Got transferzone " + transferZone);
+        Set<WarehouseTransferzoneSection> transferzoneSections = transferZone.getWarehouseTransferzoneSections();
+
+        log.info("Got transferzone sections " + transferzoneSections);
+
+        // Recorrer los paquetes de la zona de transferencia y asignarlos a la ruta externa correspondiente
         for (WarehouseTransferzoneSection section : transferzoneSections) {
             for (Parcel parcel : section.getParcels()) {
                 addParcelToExternalRoute(parcel);
             }
         }
+        locationsRepository.save(warehouse);
     }
 
     /**
@@ -96,10 +106,15 @@ public class WarehousesService {
 
         // Comprobar que existe la ruta externa, si no, crearla
         if (externalRoute == null) {
+            log.warn("External route is null, adding a new external route");
             externalRoute = addExternalRouteToWarehouse(origin, target);
+            log.info("Resulting external route = " + externalRoute);
         }
         parcelsService.updateParcelStatus(parcel, ParcelStatus.IN_LONG_DISTANCE_TRANSPORT);
-        ((RouteStop) externalRoute.getRouteStops().toArray()[0]).addParcel(parcel);
+
+        RouteStop routeStop = externalRoute.getRouteStops().iterator().next();
+        routeStop.addParcel(parcel);
+        routeStopRepository.save(routeStop);
         routesRepository.save(externalRoute);
     }
 
@@ -128,6 +143,8 @@ public class WarehousesService {
      * @param parcel Paquete que se traslada.
      */
     public void addParcelToTransferzone(Parcel parcel) {
+        log.info("Adding parcel to transferzone from " + parcel);
+
         // Obtener el almacén de salida del paquete (el ubicado en la ciudad del emisor)
         Warehouse warehouse = findParcelSenderReferenceWarehouse(parcel);
 
@@ -137,6 +154,8 @@ public class WarehousesService {
         // Buscar una sección en la zona de transferencia que tenga el mismo nombre que la ciudad de destino
         WarehouseTransferzoneSection transferzoneSection =
                 warehouseTransferzoneSectionRepository.findByCity_NameIgnoreCase(targetCity.getName());
+
+        log.info("Found WarehouseTransferzone " + transferzoneSection);
 
         if (transferzoneSection != null) {
             // Añadir el paquete a la lista de paquetes de la sección de la zona de transferencia
@@ -164,9 +183,10 @@ public class WarehousesService {
         List<Route> allExternalRoutes =
                 routesRepository.findByRouteStops_Location_CityEqualsAndRouteTypeEquals(city, RouteType.EXTERNAL);
 
-        log.info("AllExternalRoutes is " + allExternalRoutes);
+        log.info("Found " + allExternalRoutes.size() + " external routes");
 
         if (allExternalRoutes.size() > 0) {
+            log.info("Iterating all external routes");
             for (Route route: allExternalRoutes) {
                 for (Route warehouseRoute: warehouse.getExternalRoutes()) {
                     if (warehouseRoute.equals(route)) return route;
@@ -212,30 +232,42 @@ public class WarehousesService {
     }
 
     public void addTransferzoneSection(Warehouse warehouse, City city, Parcel... parcels) {
-        warehouse.getTransferZone()
-                .getWarehouseTransferzoneSections().add(new WarehouseTransferzoneSection(city, parcels));
+        log.info("Adding transferzone section to " + warehouse);
+        WarehouseTransferZone transferZone = warehouse.getTransferZone();
+        WarehouseTransferzoneSection transferzoneSection =
+                new WarehouseTransferzoneSection(citiesRepository.findByNameIgnoreCase(city.getName()), parcels);
+        warehouseTransferzoneSectionRepository.save(transferzoneSection);
+
+        transferZone.getWarehouseTransferzoneSections().add(transferzoneSection);
+
+        log.info("Result " + warehouse);
+        locationsRepository.save(warehouse);
     }
 
     /**
-     * Inicializa la ruta interna de un almacén con una ruta vacía.
-     * Habitualmente se llama a este método inmediatamente después de la creación de un almacen.
-     * @param warehouse Almacén a inicializar
+     * Inicializa un almacén creando una ruta interna y una zona de transferencia
+     * @param warehouse
      */
-    public void initWarehouseInternalRoutes(Warehouse warehouse) {
+    public void initWarehouse(Warehouse warehouse) {
         Route warehouseInternalRoute = new Route();
         routesRepository.save(warehouseInternalRoute);
         warehouse.setInternalRoute(warehouseInternalRoute);
-    }
 
-    /**
-     * Inicializa la zona de transferencia del almacén
-     * @param warehouse almacén a inicializar
-     */
-    public void initWarehouseTransferzone(Warehouse warehouse) {
-        // Crear una zona de transferencia
         WarehouseTransferZone warehouseTransferZone = new WarehouseTransferZone();
         warehouseTransferZoneRepository.save(warehouseTransferZone);
         warehouse.setTransferZone(warehouseTransferZone);
+
+        locationsRepository.save(warehouse);
+    }
+
+    /**
+     * Restablece la ruta interna de un almacén.
+     * Obligatorio tras haber terminado una ruta.
+     * @param warehouse
+     */
+    public void resetWarehouseInternalRoute(Warehouse warehouse) {
+        routeStopRepository.deleteAll(warehouse.getInternalRoute().getRouteStops());
+        locationsRepository.save(warehouse);
     }
 
     /**
@@ -266,9 +298,12 @@ public class WarehousesService {
      * @param parcel Paquete a procesar
      */
     public void processParcelReception(Parcel parcel) {
+        log.info("Processing parcel reception: " + parcel);
+        log.info("Is for internal dispatch? " + parcel.isForInternalDispatch());
+
         parcelsService.updateParcelStatus(parcel, ParcelStatus.IN_ORIGIN);
-        Warehouse senderWarehouse = findParcelSenderReferenceWarehouse(parcel);
         removeParcelFromInternalRoute(parcel); // Eliminarlo de la ruta interna
+
         if (parcel.isForInternalDispatch()) {
             addParcelToInternalRoute(parcel, RouteStopType.DELIVERY);
         } else {

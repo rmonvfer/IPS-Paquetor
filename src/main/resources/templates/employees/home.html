@@ -24,12 +24,13 @@
       <div class="columns">
         <div class="column">
           <h4 class="is-size-4 is-bold">Ruta</h4>
-          <pre th:text="${route.toString()}"></pre>
+
         </div>
       </div>
       <div class="columns">
         <div class="column is-centered">
-          <a class="button" href="/employee/route/start">Comenzar ruta</a>
+          <a class="button is-danger"
+             th:href="${'/employee/route/'+ route.id + '/' + routeStops.get(0)}">Comenzar ruta</a>
         </div>
       </div>
     </div>

@@ -32,12 +32,11 @@ public class ParcelsController {
     @PostMapping(value = "/parcel/register")
     public String registerParcel(@ModelAttribute("parcel") Parcel parcel, Model model) {
         parcel.setSender(usersService.getLoggedInUser());
-        UUID new_parcel_uuid = parcelsService.registerNewParcel(parcel);
+        Parcel registeredParcel = parcelsService.registerNewParcel(parcel);
 
-        parcelsService.processParcelPickupOrder(
-                parcelsService.getParcel(new_parcel_uuid), ParcelPickupOrderType.REMOTE);
+        parcelsService.processParcelPickupOrder(registeredParcel, ParcelPickupOrderType.REMOTE);
 
-        model.addAttribute("newParcel", parcelsService.getParcel(new_parcel_uuid));
+        model.addAttribute("newParcel", registeredParcel);
         return "parcels/newParcelRegistered";
     }
 

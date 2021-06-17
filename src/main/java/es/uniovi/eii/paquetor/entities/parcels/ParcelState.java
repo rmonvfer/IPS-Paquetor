@@ -34,6 +34,7 @@ public class ParcelState {
         HashMap<ParcelStatus, String> statusStringHashMap = new HashMap<>();
         statusStringHashMap.put(ParcelStatus.NOT_PROCESSED, "Paquete registrado en el sistema, pendiente de procesamiento");
         statusStringHashMap.put(ParcelStatus.PICKUP_READY, "Pendiente de recogida por el transportista");
+        statusStringHashMap.put(ParcelStatus.PICKED_UP, "Recogido");
         statusStringHashMap.put(ParcelStatus.IN_DELIVERY, "En reparto");
         statusStringHashMap.put(ParcelStatus.IN_DESTINY, "En almacén de destino");
         statusStringHashMap.put(ParcelStatus.IN_ORIGIN, "En almacén de origen");

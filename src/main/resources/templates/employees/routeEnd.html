@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head"></head>
+<body class="has-background-warning">
+
+<nav class="is-primary" th:insert="fragments/nav"></nav>
+
+<section class="container is-max-desktop pb-6 px-4">
+  <h3 class="ml-2 is-size-3 has-text-weight-bold mt-3">Ruta finalizada</h3>
+
+  <div class="columns my-3 mx-2 box">
+    <div class="column">
+      <h5 class="is-size-5 is-bold">Paquetes recogidos</h5>
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <tr>
+          <th>ID</th>
+          <th>Alto</th>
+          <th>Ancho</th>
+          <th>Profundidad</th>
+          <th>Peso</th>
+          <th>Destino</th>
+        </tr>
+        <tr th:each="parcel: ${pickedUpParcels}">
+          <td th:text="${parcel.id}"></td>
+          <td th:text="${parcel.height}"></td>
+          <td th:text="${parcel.width}"></td>
+          <td th:text="${parcel.depth}"></td>
+          <td th:text="${parcel.weight}"></td>
+          <td th:text="${parcel.recipient.location.city.name}"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="columns my-3 mx-2 box is-vcentered">
+    <div class="column">
+      <h5 class="is-size-5 has-text-weight-bold">¿Preparar paquetes para su reparto?</h5>
+      <p class="mb-2">
+        Los paquetes a repartir dentro de la ciudad se añadirán de nuevo a la ruta interna para su entrega, aquellos
+        con destino en otra ciudad serán llevados al área correspondiente de la zona de transferencia
+        según la ciudad de residencia del receptor.
+      </p>
+      <a class="button is-danger" th:href="${'/employee/route/process/reception/' + route.id }">
+        <span>Confirmar procesamiento</span>
+      </a>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -56,7 +56,7 @@ public class ParcelsService {
      * @param depth Profundidad del paquete
      * @return UUID, identificador único aleatorio del paquete.
      */
-    public UUID registerNewParcel(User sender, User recipient, Double weight, Double height, Double width, Double depth) {
+    public Parcel registerNewParcel(User sender, User recipient, Double weight, Double height, Double width, Double depth) {
         UUID parcelUUID = UUID.randomUUID();
         log.info(String.format("Registering a new Parcel {UUID=%s, sender=%s, recipient=%s, h=%f, w=%f, d=%f}",
                 parcelUUID, sender, recipient, height, width, depth));
@@ -85,7 +85,7 @@ public class ParcelsService {
         parcelsRepository.save(newParcel);
 
         log.info("Parcel with UUID " + parcelUUID + " has been registered successfully!");
-        return parcelUUID;
+        return parcelsRepository.findById(parcelUUID).get();
     }
 
     /**
@@ -94,7 +94,7 @@ public class ParcelsService {
      * @param parcel paquete a añadir
      * @return ID del nuevo paquete registrado
      */
-    public UUID registerNewParcel(Parcel parcel) {
+    public Parcel registerNewParcel(Parcel parcel) {
         // De la ciudad tan solo recibimos el nombre, por lo que hay que buscarla e introducirla
         // de nuevo en la localización para evitar problemas más adelante
         String recipientCityName = parcel.getRecipient().getLocation().getCity().getName();

@@ -7,7 +7,7 @@
     <div class="hero-body">
         <div class="container">
             <div class="columns is-centered">
-                <div class="column is-8-tablet is-6-desktop is-5-widescreen">
+                <div class="column is-8-tablet is-6-desktop is-5-widescreen mb-4">
                     <form th:action="@{/register}" method="post" th:object="${user}" class="box">
                         <div class="field">
                             <label for="name" class="label">Nombre</label>
@@ -79,6 +79,39 @@
                                        id="passwordConfirm"
                                        placeholder="Repita la contraseña" required="true" />
                                 <span class="icon is-small is-left"><i class="fa fa-lock"></i></span>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="surname" class="label">Calle</label>
+                            <div class="control has-icons-left">
+                                <input type="text" class="input"
+                                       name="surname"
+                                       th:field="*{location.calle}"
+                                       id="calle"
+                                       placeholder="Avenida lejana" required="true" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="surname" class="label">Número</label>
+                            <div class="control has-icons-left">
+                                <input type="number" class="input"
+                                       name="number"
+                                       th:field="*{location.numero}"
+                                       id="numero"
+                                       placeholder="12" required="true" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="surname" class="label">Ciudad</label>
+                            <div class="control has-icons-left">
+                                <input type="text" class="input"
+                                       name="surname"
+                                       th:field="*{location.city.name}"
+                                       id="text"
+                                       placeholder="Oviedo" required="true" />
                             </div>
                         </div>
 

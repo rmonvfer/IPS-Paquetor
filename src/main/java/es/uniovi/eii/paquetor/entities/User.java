@@ -53,7 +53,7 @@ public class User {
     @Column(name = "is_disabled", nullable = false)
     private boolean isDisabled = false;
 
-    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.PERSIST, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "route_id")
     private Route route;
 }

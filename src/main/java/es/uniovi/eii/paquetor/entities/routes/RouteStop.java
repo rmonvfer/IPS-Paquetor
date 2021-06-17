@@ -7,7 +7,8 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data @Accessors(chain = true)
@@ -17,20 +18,23 @@ public class RouteStop {
     private Long id;
 
     public RouteStop() {
-        setParcels(new ArrayList<>());
+        setParcels(new HashSet<>());
     }
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private RouteStopType type;
 
-    @OneToMany(orphanRemoval = true)
+    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "route_stop_id")
-    private List<Parcel> parcels;
+    private Set<Parcel> parcels;
 
     @OneToOne(cascade = CascadeType.MERGE, orphanRemoval = true)
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @Column(name = "visited", nullable = false)
+    private boolean visited = false;
 
     public RouteStop addParcel(Parcel parcel) {
         getParcels().add(parcel);
